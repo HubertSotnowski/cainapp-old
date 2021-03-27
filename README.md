@@ -2,19 +2,19 @@
 
 Welcome to CAINAPP 2.0!
 
-### what is cain?
+### What is CAIN?
 
-##### cain - Channel Attention Is All You Need for Video Frame Interpolation
+##### CAIN - Channel Attention Is All You Need for Video Frame Interpolation
 
-Cain is very fast interpolation network and use not much vram to like 5GB with fp16 for 8k! 
+CAIN is a very fast interpolation network that doesn't use much vram (Ex: 5GB with fp16 for 8k)! 
 
 
 
-### what is cainapp?
+### What is cainapp?
 
 ##### 
 
-cain app is gui for cain with some new things like fp16, saving frames on other thread and more! look at code!
+Cainapp is a gui for cain with some new things like fp16, saving frames on other threads and more! Look at the code!
 
 
 
@@ -40,34 +40,34 @@ cain app is gui for cain with some new things like fp16, saving frames on other 
 
    
 
-4. download ffmpeg 🖥️ ⬅️ (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
+4. Download ffmpeg 🖥️ ⬅️ (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
 
-5. extract 📦 ffmpeg.exe in cainapp folder📁
+5. Extract 📦 ffmpeg.exe in cainapp folder📁
 
-6. download models and put them to cain folder📁
+6. Download models and put them into the cain folder📁
 
-7. download models and put them to cain folder📁. in cmd run ` cd path/to/cainapp/ ` then ```python main.py```
+7. In cmd, run ` cd path/to/cainapp/ ` then ```python main.py```
 
-## How run discord bot🤖
+## How to run the discord bot🤖
 
-same as in How to install but you need install 1 more  thing
+Basically the same as in How to install but you need to install 1 more thing
 
 `pip install discord.py` 
 
-and put your token 
+And put your token 
 
 ```
 TOKEN='token here' <--- here
 bot.run(TOKEN)
 ```
 
-and run ```python3 1.py```
+And run ```python3 1.py```
 
-Sadly Discord limits file size to 8MB so bitrate is not high and video length is limited. Audio is only 69kbps
+Sadly, Discord limits the file size to 8MB, so bitrate isn't high and video length is limited. Audio is also only 69kbps
 
-## How train 🚆
+## How to train 🚆
 
-[![Open In Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/github/Hubert482/CAIN/blob/master/Training.ipynb) simple train colab try it! its simple 
+[![Open In Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/github/Hubert482/CAIN/blob/master/Training.ipynb) Simple train colab try it! Its simple! 
 
 
 
