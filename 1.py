@@ -54,11 +54,11 @@ os.system("nvidia-smi")
 async def gpu(ctx):
     await ctx.channel.send(content=f"bot run on {torch.cuda.get_device_name(0)}\nvram: {int(torch.cuda.get_device_properties('cuda').total_memory/1024/1024/1024)}GB")
 @bot.command()
-async def interpolate(ctx, arg1="--model",arg2="TVP_Cain_abriged", arg3="--discord", arg4="x"):
+async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4="x"):
     ytdl=False
     gifuse=False
     ytdlurl="none"
-    model_name="hubert_v0.1"
+    model_name="stable"
     ################  ################
 
     if arg1=="--model":
@@ -196,7 +196,7 @@ async def models(ctx):
         title="List of current models",
         description=cleandoc("""
             broken - hubert says its "very epileptic" and to "try it"
-            stbale - stable model trained on vimeo90k i think can be good for most things
+            stable - stable model trained on vimeo90k i think can be good for most things
             TVP_WIP-8E - problems with green not tested
         """)
     )
