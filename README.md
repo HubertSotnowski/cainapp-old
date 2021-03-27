@@ -43,7 +43,7 @@ Don't forget to keep the apostraphes around the token, otherwise it won't work.
 
 1. download python 3.8 🖥️ ⬅️ (https://www.python.org/ftp/python/3.8.7/python-3.8.7-amd64.exe)
 
-2. install python 3.8 remember to select this https://media.discordapp.net/attachments/762402995219726336/825449924862017546/unknown.png
+2. install python 3.8 remember to select this 
 
 3. in cmd run 
 
@@ -65,10 +65,27 @@ Don't forget to keep the apostraphes around the token, otherwise it won't work.
 
 6. download models and put them to cain folder📁
 
-7. download models and put them to cain folder📁. in cmd run ` cd path/to/cainapp/ ` then `python main.py`
+7. download models and put them to cain folder📁. in cmd run ` cd path/to/cainapp/ ` then ```python main.py```
 
-   
+## How run discord bot🤖
+
+same as in How to install but you need install 1 more  thing
+
+`pip install discord.py` 
+
+and put your token 
+
+```
+TOKEN='token here' <--- here
+bot.run(TOKEN)
+```
+
+and run ```python3 1.py```
 
 ## How train 🚆
 
 [![Open In Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/github/Hubert482/CAIN/blob/master/Training.ipynb) simple train colab try it! its simple 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
