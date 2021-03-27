@@ -1,5 +1,44 @@
 # CAINAPP 2 BETA🚧
 
+
+Welcome to CAINAPP 2.0!
+
+In this version, CAIN's command interface can run completely off of discord!
+However, this comes with some limitations, such as the fact that in a server without nitro, you are limited to a max file size of 8 mb.
+The audio quality suffers as a result.
+
+However, if you wish to run the GUI only to circumvent this, you can do that.
+
+We have a few models for you to play with, such as
+
+broken - hubert claims for this to be "epileptic" and to "try it"
+
+stable - a stable model trained on vimeo90k
+
+TVP_WIP-8E - fine for use, but we're still working out some things
+
+Here are some examples!
+
+broken
+
+stable
+
+TVP_WIP-8E
+
+If you wish to support the project, you can donate to Hubert's patreon [here](https://www.patreon.com/hubert_)!
+Hubert's dogecoin and dgb wallets are also listed in the code.
+
+Cain is very fast compared to some other interpolation software, and where it really excels is in 8k interpolation, if you have a card that's up to that
+
+## How to run the discord bot!
+
+1. In the file 1.py, put your bot token in like this:
+`TOKEN='token here' `.
+Don't forget to keep the apostraphes around the token, otherwise it won't work.
+2. Copy all files and folders from the "to copy" folder to the main directory with everything else
+3. Run the bot using `python3 1.py`
+4. Enjoy using the discord command interface!
+
 ## How to install 💾
 
 1. download python 3.8 🖥️ ⬅️ (https://www.python.org/ftp/python/3.8.7/python-3.8.7-amd64.exe)
