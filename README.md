@@ -6,7 +6,7 @@ Welcome to CAINAPP 2.0!
 
 ##### cain - Channel Attention Is All You Need for Video Frame Interpolation
 
-Cain is very fast interpolation network and use not much vram to like 5GB with fp16 for 8k!. 
+Cain is very fast interpolation network and use not much vram to like 5GB with fp16 for 8k! 
 
 
 
