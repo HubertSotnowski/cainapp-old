@@ -1,43 +1,22 @@
 # CAINAPP 2 BETA🚧
 
-
 Welcome to CAINAPP 2.0!
 
-In this version, CAIN's command interface can run completely off of discord!
-However, this comes with some limitations, such as the fact that in a server without nitro, you are limited to a max file size of 8 mb.
-The audio quality suffers as a result.
+### what is cain?
 
-However, if you wish to run the GUI only to circumvent this, you can do that.
+##### cain - Channel Attention Is All You Need for Video Frame Interpolation
 
-We have a few models for you to play with, such as
+Cain is very fast interpolation network and use not much vram to like 5GB with fp16 for 8k!. 
 
-broken - hubert claims for this to be "epileptic" and to "try it"
 
-stable - a stable model trained on vimeo90k
 
-TVP_WIP-8E - fine for use, but we're still working out some things
+### what is cainapp?
 
-Here are some examples!
+##### 
 
-broken
+cain app is gui for cain with some new things like fp16, saving frames on other thread and more! look at code!
 
-stable
 
-TVP_WIP-8E
-
-If you wish to support the project, you can donate to Hubert's patreon [here](https://www.patreon.com/hubert_)!
-Hubert's dogecoin and dgb wallets are also listed in the code.
-
-Cain is very fast compared to some other interpolation software, and where it really excels is in 8k interpolation, if you have a card that's up to that
-
-## How to run the discord bot!
-
-1. In the file 1.py, put your bot token in like this:
-`TOKEN='token here' `.
-Don't forget to keep the apostraphes around the token, otherwise it won't work.
-2. Copy all files and folders from the "to copy" folder to the main directory with everything else
-3. Run the bot using `python3 1.py`
-4. Enjoy using the discord command interface!
 
 ## How to install 💾
 
@@ -55,7 +34,9 @@ Don't forget to keep the apostraphes around the token, otherwise it won't work.
 
    `pip install tqdm`
 
-   `pip install opencv-python` 
+   `pip install opencv-python`
+
+   
 
    
 
@@ -82,10 +63,28 @@ bot.run(TOKEN)
 
 and run ```python3 1.py```
 
+Sadly Discord limits file size to 8MB so bitrate is not high and video length is limited. Audio is only 69kbps
+
 ## How train 🚆
 
 [![Open In Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/github/Hubert482/CAIN/blob/master/Training.ipynb) simple train colab try it! its simple 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
+
+
+## Donate💰
+
+If you wish to support the project, you can donate to Hubert's patreon [here](https://www.patreon.com/hubert_)!
+Hubert's dogecoin and dgb wallets are also listed in the code.
+
+
+
+## CAIN Citation
+
+```
+@inproceedings{choi2020cain,
+    author = {Choi, Myungsub and Kim, Heewon and Han, Bohyung and Xu, Ning and Lee, Kyoung Mu},
+    title = {Channel Attention Is All You Need for Video Frame Interpolation},
+    booktitle = {AAAI},
+    year = {2020}
+}
+```
