@@ -121,7 +121,7 @@ async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4=
     if width<height:
         os.system(f"ffmpeg -i 1.mkv -vf scale=256:{int(((height/width)*256)/8)*8} -pix_fmt rgb24 -t 75 frames/%6d.png")
     else:
-        os.system(f"ffmpeg -i 1.mkv -vf scale={int(((width/height)*256)/8)*8}:256 -pix_fmt rgb24 -t 165 frames/%6d.png")
+        os.system(f"ffmpeg -i 1.mkv -vf scale={int(((width/height)*256)/8)*8}:256 -pix_fmt rgb24 -t 75 frames/%6d.png")
     os.system("ffmpeg -i 1.mkv  -pix_fmt rgb24 -t 75 1.wav")
     await message.edit(content="finished frame extracting🎞️\n")
     if fps==0.0:
