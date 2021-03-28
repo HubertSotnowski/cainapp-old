@@ -134,7 +134,7 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
 
     await message.edit(content="interpolating✨\n")
     try:
-      generate.interpolation(batch_size=10, img_fmt="png", torch_device="cuda", temp_img = f"frames/", GPUid=1, GPUid2=False, fp16=False, modelp=f"models/{model_name}.pth")
+      generate.interpolation(batch_size=10, img_fmt="png", torch_device="cuda", temp_img = f"frames", GPUid=1, GPUid2=False, fp16=False, modelp=f"models/{model_name}.pth")
     except Exception as e:
         await  ctx.channel.send(content=f"its oom? interpolation crashed❌\n{e}")
     input_and_output.list_frame(dir="./frames", text_path="./")
