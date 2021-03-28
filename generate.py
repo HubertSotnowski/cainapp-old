@@ -36,7 +36,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
     model.load_state_dict(checkpoint['state_dict'])
     del checkpoint
     def save():
-            utils.save_image(out[b], temp_img[:-7]+savepath)
+            utils.save_image(out[b], temp_img[:-6]+savepath)
     def test():
         global savepath
         global images
