@@ -22,7 +22,7 @@ Cainapp is a gui for cain with some new things like fp16, saving frames on other
 
 1. download python 3.8 🖥️ ⬅️ (https://www.python.org/ftp/python/3.8.7/python-3.8.7-amd64.exe)
 
-2. install python 3.8 remember to select this 
+2. install python 3.8 remember to select add to path
 
 3. in cmd run 
 
