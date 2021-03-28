@@ -1,10 +1,9 @@
 import math
-import partialconv2d as nnn
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import json
-#hmm i changed here few things look at my fork https://github.com/Hubert482/CAIN
+
 def sub_mean(x):
     mean = x.mean(2, keepdim=True).mean(3, keepdim=True)
     x -= mean
@@ -30,7 +29,7 @@ class ConvNorm(nn.Module):
 
         reflection_padding = kernel_size // 2
         self.reflection_pad = nn.ReflectionPad2d(reflection_padding)
-        self.conv = nnn.PartialConv2d(in_feat, out_feat, stride=stride, kernel_size=kernel_size, bias=True)
+        self.conv = nn.Conv2d(in_feat, out_feat, stride=stride, kernel_size=kernel_size, bias=True)
 
         self.norm = norm
         if norm == 'IN':
@@ -59,7 +58,7 @@ class UpConvNorm(nn.Module):
         else:
             # out_channels is always going to be the same as in_channels
             self.upconv = nn.Sequential(
-                nn.Upsample(mode='nearest', scale_factor=2, align_corners=False),
+                nn.Upsample(mode='bilinear', scale_factor=2, align_corners=False),
                 ConvNorm(in_channels, out_channels, kernel_size=1, stride=1, norm=norm))
     
     def forward(self, x):
@@ -74,7 +73,7 @@ class meanShift(nn.Module):
         if nChannel == 1:
             l = rgbMean[0] * rgbRange * float(sign)
 
-            self.shifter = nnn.PartialConv2d(1, 1, kernel_size=1, stride=1, padding=0)
+            self.shifter = nn.Conv2d(1, 1, kernel_size=1, stride=1, padding=0)
             self.shifter.weight.data = torch.eye(1).view(1, 1, 1, 1)
             self.shifter.bias.data = torch.Tensor([l])
         elif nChannel == 3:  
@@ -82,14 +81,14 @@ class meanShift(nn.Module):
             g = rgbMean[1] * rgbRange * float(sign)
             b = rgbMean[2] * rgbRange * float(sign)
 
-            self.shifter = nnn.PartialConv2d(3, 3, kernel_size=1, stride=1, padding=0)
+            self.shifter = nn.Conv2d(3, 3, kernel_size=1, stride=1, padding=0)
             self.shifter.weight.data = torch.eye(3).view(3, 3, 1, 1)
             self.shifter.bias.data = torch.Tensor([r, g, b])
         else:
             r = rgbMean[0] * rgbRange * float(sign)
             g = rgbMean[1] * rgbRange * float(sign)
             b = rgbMean[2] * rgbRange * float(sign)
-            self.shifter = nnn.PartialConv2d(6, 6, kernel_size=1, stride=1, padding=0)
+            self.shifter = nn.Conv2d(6, 6, kernel_size=1, stride=1, padding=0)
             self.shifter.weight.data = torch.eye(6).view(6, 6, 1, 1)
             self.shifter.bias.data = torch.Tensor([r, g, b, r, g, b])
 
@@ -117,7 +116,7 @@ class ResBlock(nn.Module):
         
         self.downscale = None
         if downscale:
-            self.downscale = nnn.PartialConv2d(in_feat, out_feat, kernel_size=1, stride=2)
+            self.downscale = nn.Conv2d(in_feat, out_feat, kernel_size=1, stride=2)
 
     def forward(self, x):
         res = x
@@ -137,9 +136,9 @@ class CALayer(nn.Module):
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         # feature channel downscale and upscale --> channel weight
         self.conv_du = nn.Sequential(
-            nnn.PartialConv2d(channel, channel // reduction, 1, padding=0, bias=True),
+            nn.Conv2d(channel, channel // reduction, 1, padding=0, bias=True),
             nn.ReLU(inplace=True),
-            nnn.PartialConv2d(channel // reduction, channel, 1, padding=0, bias=True),
+            nn.Conv2d(channel // reduction, channel, 1, padding=0, bias=True),
             nn.Sigmoid()
         )
 
@@ -163,7 +162,7 @@ class RCAB(nn.Module):
         )
         self.downscale = downscale
         if downscale:
-            self.downConv = nnn.PartialConv2d(in_feat, out_feat, kernel_size=3, stride=2, padding=1)
+            self.downConv = nn.Conv2d(in_feat, out_feat, kernel_size=3, stride=2, padding=1)
         self.return_ca = return_ca
 
     def forward(self, x):
@@ -183,11 +182,7 @@ class RCAB(nn.Module):
 class ResidualGroup(nn.Module):
     def __init__(self, Block, n_resblocks, n_feat, kernel_size, reduction, act, norm=False):
         super(ResidualGroup, self).__init__()
-        json_1 = open('1.json')
-        json_1text = json_1.read()
-        config_json = json.loads(json_1text)
-        n_resblocks=config_json["n_resblocks"]
-        n_resgroups=config_json["n_resgroups"]
+
         modules_body = [Block(n_feat, n_feat, kernel_size, reduction, bias=True, norm=norm, act=act)
             for _ in range(n_resblocks)]
         modules_body.append(ConvNorm(n_feat, n_feat, kernel_size, stride=1, norm=norm))
@@ -230,7 +225,7 @@ class PixelShuffle(nn.Module):
 
 def conv(in_channels, out_channels, kernel_size, 
          stride=1, bias=True, groups=1):
-    return nnn.PartialConv2d(
+    return nn.Conv2d(
         in_channels,
         out_channels,
         kernel_size=kernel_size,
@@ -241,7 +236,7 @@ def conv(in_channels, out_channels, kernel_size,
 
 
 def conv1x1(in_channels, out_channels, stride=1, bias=True, groups=1):
-    return nnn.PartialConv2d(
+    return nn.Conv2d(
         in_channels,
         out_channels,
         kernel_size=1,
@@ -251,7 +246,7 @@ def conv1x1(in_channels, out_channels, stride=1, bias=True, groups=1):
 
 def conv3x3(in_channels, out_channels, stride=1, 
             padding=1, bias=True, groups=1):    
-    return nnn.PartialConv2d(
+    return nn.Conv2d(
         in_channels,
         out_channels,
         kernel_size=3,
@@ -262,7 +257,7 @@ def conv3x3(in_channels, out_channels, stride=1,
 
 def conv5x5(in_channels, out_channels, stride=1, 
             padding=2, bias=True, groups=1):    
-    return nnn.PartialConv2d(
+    return nn.Conv2d(
         in_channels,
         out_channels,
         kernel_size=5,
@@ -273,7 +268,7 @@ def conv5x5(in_channels, out_channels, stride=1,
 
 def conv7x7(in_channels, out_channels, stride=1, 
             padding=3, bias=True, groups=1):    
-    return nnn.PartialConv2d(
+    return nn.Conv2d(
         in_channels,
         out_channels,
         kernel_size=7,
@@ -297,7 +292,7 @@ def upconv2x2(in_channels, out_channels, mode='shuffle'):
     else:
         # out_channels is always going to be the same as in_channels
         return nn.Sequential(
-            nn.Upsample(mode='nearest', scale_factor=2, align_corners=False),
+            nn.Upsample(mode='bilinear', scale_factor=2, align_corners=False),
             conv1x1(in_channels, out_channels))
 
 
@@ -306,12 +301,10 @@ class Interpolation(nn.Module):
     def __init__(self, n_resgroups, n_resblocks, n_feats, 
                  reduction=16, act=nn.LeakyReLU(0.2, True), norm=False):
         super(Interpolation, self).__init__()
-        json_1 = open('1.json')
-        json_1text = json_1.read()
-        config_json = json.loads(json_1text)
-        n_resblocks=config_json["n_resblocks"]
-        n_resgroups=config_json["n_resgroups"]
+
+        # define modules: head, body, tail
         self.headConv = conv3x3(n_feats * 2, n_feats)
+
         modules_body = [
             ResidualGroup(
                 RCAB,
@@ -321,7 +314,7 @@ class Interpolation(nn.Module):
                 reduction=reduction, 
                 act=act, 
                 norm=norm)
-            for _ in range(6)]
+            for _ in range(n_resgroups)]
         self.body = nn.Sequential(*modules_body)
 
         self.tailConv = conv3x3(n_feats, n_feats)
@@ -342,11 +335,8 @@ class Interpolation_res(nn.Module):
     def __init__(self, n_resgroups, n_resblocks, n_feats,
                  act=nn.LeakyReLU(0.2, True), norm=False):
         super(Interpolation_res, self).__init__()
-        json_1 = open('1.json')
-        json_1text = json_1.read()
-        config_json = json.loads(json_1text)
-        n_resblocks=config_json["n_resblocks"]
-        n_resgroups=config_json["n_resgroups"]
+
+        # define modules: head, body, tail (reduces concatenated inputs to n_feat)
         self.headConv = conv3x3(n_feats * 2, n_feats)
 
         modules_body = [ResidualGroup(ResBlock, n_resblocks=n_resblocks, n_feat=n_feats, kernel_size=3,
