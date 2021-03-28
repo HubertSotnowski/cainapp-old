@@ -157,14 +157,14 @@ async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4=
 
     ################ mp4 encoidng ################
     try:
-        os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -vf hqdn3d  -tune hq -rc vbr -preset p7 -c:a libopus  -b:a 69k -fs 7.95M "{filename}.mp4"')#-preset veryslow
-        filemp4=discord.File(f"{filename}.mp4")
+        os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -vf hqdn3d -c:a libopus -threads 24 -speed 16 -b:a 69k -fs 7.95M "{filename}.webm"')#-preset veryslow
+        filemp4=discord.File(f"{filename}.webm")
 
         await ctx.channel.send(file=filemp4, content="finished!✔️")
 
     except:
-        os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset p7   -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
-        filemp4=discord.File(f"{filename}.mp4")
+        os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p  -vf hqdn3d -threads 24 -speed 16   -fs 7.95M "{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+        filemp4=discord.File(f"{filename}.webm")
         await ctx.channel.send(file=filemp4, content="finished!✔️")
         pass
     torch.cuda.empty_cache()
