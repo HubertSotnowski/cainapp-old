@@ -4,6 +4,7 @@ from discord.ext import commands
 from inspect import cleandoc
 from typing import Union
 import os
+import requests
 import cv2
 import shutil
 #######################
@@ -182,6 +183,14 @@ async def status(ctx):
     await ctx.send('bot work. now..')
 
 #
+@bot.command()
+async def verssion(ctx):
+    versfile = open("ver.txt", "r")
+    curverssion=versfile.read()
+    r = requests.get('https://raw.githubusercontent.com/Hubert482/cainapp/main/ver.txt')
+    await ctx.send(f'this bot work on {curverssion}, latest verssion: {r.text}')
+
+#+
 @bot.command()
 
 async def dgb(ctx):

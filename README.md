@@ -50,9 +50,11 @@ Cainapp is a gui for cain with some new things like fp16, saving frames on other
 
 ## How to run the discord bot🤖
 
-Basically the same as in How to install but you need to install 1 more thing
+Basically the same as in How to install but you need to install 2 more things
 
 `pip install discord.py` 
+
+`pip install requests`
 
 And put your token to token.txt 
 
