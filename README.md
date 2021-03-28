@@ -16,6 +16,15 @@ CAIN is a very fast interpolation network that doesn't use much vram (Ex: 5GB wi
 
 Cainapp is a gui for cain with some new things like fp16, saving frames on other threads and more! Look at the code!
 
+## What are the requirements?
+
+Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-based version, so the only requirements are
+
+1. A nvidia GPU
+2. Driver version >396.26
+
+So in theory, it could even run on a GTX 450
+
 
 
 ## How to install 💾
