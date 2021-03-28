@@ -20,7 +20,7 @@ Cainapp is a gui for cain with some new things like fp16, saving frames on other
 
 ## How to install 💾
 
-1. download python 3.8 🖥️ ⬅️ (https://www.python.org/ftp/python/3.8.7/python-3.8.7-amd64.exe)
+1. download python 3.8 📥 (https://www.python.org/ftp/python/3.8.7/python-3.8.7-amd64.exe)
 
 2. install python 3.8 remember to select add to path
 
@@ -40,7 +40,7 @@ Cainapp is a gui for cain with some new things like fp16, saving frames on other
 
    
 
-4. Download ffmpeg 🖥️ ⬅️ (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
+4. Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
 
 5. Extract 📦 ffmpeg.exe in cainapp folder📁
 
