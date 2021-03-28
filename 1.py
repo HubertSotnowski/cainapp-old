@@ -15,8 +15,6 @@ from random import seed
 from random import random
 #######################
 
-
-
 def delete():
     try:
         shutil.rmtree('frames/')
@@ -84,7 +82,7 @@ async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4=
     ################ Downloading video ################
 
 
-    message =  await ctx.send(content=f"Downloading video\n")
+    message =  await ctx.send(content=f"Downloading video 📥\n")
 
     if ytdl==True:
         print("using youtube-dl")
@@ -112,20 +110,20 @@ async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4=
         if length>75:
             length=75
         bitrate = int(63200/length)
-        message.edit(content=f"bitrate {bitrate}K/s, fps: {fps*2}, frames: {frames}\n")
+        await message.edit(content=f"bitrate {bitrate}K/s, fps: {fps*2}, frames: {frames}\n")
     except Exception as e:
-        await  ctx.channel.send(content=f"error while getting data and calculating bitrate\n\n {e}")
+        await  ctx.channel.send(content=f"error❌\n\n{e}")
 
 
     ################ Using ffmpeg to extract frames and audio ################
 
-    await message.edit(content=f"starting frame extraction \n")
+    await message.edit(content=f"starting frame extraction🎞️\n")
     if width<height:
         os.system(f"ffmpeg -i 1.mkv -vf scale=256:{int(((height/width)*256)/8)*8} -pix_fmt rgb24 -t 75 frames/%6d.png")
     else:
         os.system(f"ffmpeg -i 1.mkv -vf scale={int(((width/height)*256)/8)*8}:256 -pix_fmt rgb24 -t 165 frames/%6d.png")
     os.system("ffmpeg -i 1.mkv  -pix_fmt rgb24 -t 75 1.wav")
-    await message.edit(content="finished frame extracting\n")
+    await message.edit(content="finished frame extracting🎞️\n")
     if fps==0.0:
         fps=25
 
@@ -133,19 +131,19 @@ async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4=
     ################ using interpolation ################
 
 
-    await message.edit(content="interpolating\n")
+    await message.edit(content="interpolating✨\n")
     try:
       generate.interpolation(batch_size=10, img_fmt="png", torch_device="cuda", temp_img = f"frames/", GPUid=1, GPUid2=False, fp16=False, modelp=f"models/{model_name}.pth")
     except Exception as e:
-        await  ctx.channel.send(content=f"its oom? \n{e}")
+        await  ctx.channel.send(content=f"its oom? interpolation crashed❌\n{e}")
     input_and_output.list_frame(dir="./frames", text_path="./")
-    await message.edit(content="finished interpolation\n")
+    await message.edit(content="finished interpolation✨\n")
 
 
     ################ Using ffmpeg to encode video ################
 
 
-    await message.edit(content=f"starting encoding\n")
+    await message.edit(content=f"starting encoding🗄️➡️🎞️\n")
 
 
     ################ gif encoidng ################
@@ -154,7 +152,7 @@ async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4=
     if gifuse==True:
         os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"   -fs 7.95M "{filename}.gif"')#-preset veryslow
         filemp4=discord.File(f"{filename}.gif")
-        await ctx.channel.send(file=filemp4, content="gif")
+        await ctx.channel.send(file=filemp4, content="finished!✔️")
 
 
     ################ mp4 encoidng ################
@@ -162,14 +160,13 @@ async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4=
         os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -vf hqdn3d  -tune hq -rc vbr -preset p7 -c:a libopus  -b:a 69k -fs 7.95M "{filename}.mp4"')#-preset veryslow
         filemp4=discord.File(f"{filename}.mp4")
 
-        await ctx.channel.send(file=filemp4, content="cain")
+        await ctx.channel.send(file=filemp4, content="finished!✔️")
 
     except:
         os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset p7   -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
         filemp4=discord.File(f"{filename}.mp4")
-        await ctx.channel.send(file=filemp4, content="mp4")
+        await ctx.channel.send(file=filemp4, content="finished!✔️")
         pass
-    await ctx.channel.send(content="finished!")
     torch.cuda.empty_cache()
 
 @bot.command()
@@ -205,6 +202,6 @@ async def models(ctx):
 
 
 
-TOKEN='token here'
+TOKEN='token'
 bot.run(TOKEN)
 
