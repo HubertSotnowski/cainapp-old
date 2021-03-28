@@ -168,7 +168,20 @@ async def interpolate(ctx, arg1="--model",arg2="stable", arg3="--discord", arg4=
         await ctx.channel.send(file=filemp4, content="finished!✔️")
         pass
     torch.cuda.empty_cache()
+    try:
+        os.remove(f"{filename}.mp4")
+        os.remove(f"{filename}.gif")
+    except:
+        print("not deleted something hmm")
+@bot.command()
+async def ping(ctx):
+    await ctx.send(f'Pong! {int(bot.latency*100)}ms')
+#
+@bot.command()
+async def status(ctx):
+    await ctx.send('bot work. now..')
 
+#
 @bot.command()
 
 async def dgb(ctx):
@@ -201,7 +214,7 @@ async def models(ctx):
     await ctx.send(embed=embed)
 
 
-
-TOKEN='token'
+tokenfile = open("token.txt", "r")
+TOKEN=tokenfile.read()
 bot.run(TOKEN)
 

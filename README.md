@@ -54,12 +54,7 @@ Basically the same as in How to install but you need to install 1 more thing
 
 `pip install discord.py` 
 
-And put your token 
-
-```
-TOKEN='token here' <--- here
-bot.run(TOKEN)
-```
+And put your token to token.txt 
 
 And run ```python3 1.py```
 
