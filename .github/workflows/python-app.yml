@@ -1,0 +1,40 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies and make exe
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyqt5
+        pip install qdarkstyle
+        pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio===0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+        pip install tqdm
+        pip install opencv-python
+        pip install pyinstaller==3.6
+        pyinstaller main.py 
+    - name: Upload a Build Artifact
+    - uses: actions/upload-artifact@v2.2.2
+      with:
+    # Artifact name
+       name: cainapp windows
+    # A file, directory or wildcard pattern that describes what to upload
+       path: "dist/"
+    # The desired behavior if no files are found using the provided path.
