@@ -23,7 +23,7 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 1. A nvidia GPU
 2. Driver version >396.26
 
-So in theory, it could even run on a GTX 450
+So in theory, it could even run on a GTX 650
 
 
 
