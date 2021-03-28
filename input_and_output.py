@@ -38,19 +38,19 @@ def select_path():
 def  ExtractFramesOrSplit(Type="jpg", chunksize="00:01:00", dir_path="./",Line=" ", input="./"):
 
     print(f"{Type} {chunksize} {dir_path}/{input}")
-    if os.path.isdir(f'{input}_cain/'):
+    if os.path.isdir(f'{dir_path}/cain/'):
         try:
-            shutil.rmtree(f'{dir_path}_cain')
-            os.mkdir(f'{input}_cain/')
-            os.mkdir(f'{input}_cain/frames.')
+            shutil.rmtree(f'{dir_path}/cain')
+            os.mkdir(f'{dir_path}/cain/')
+            os.mkdir(f'{dir_path}/cain/frames.')
         except:
             print("wtf")
     else:
-        os.mkdir(f'{input}_cain/')
-        os.mkdir(f'{input}_cain/frames/')
+        os.mkdir(f'{dir_path}/cain/')
+        os.mkdir(f'{dir_path}/cain/frames/')
 
-    os.system(f'ffmpeg -i "{input}" -hide_banner {Line} -q 2 -pix_fmt rgb24 "{input}_cain/frames/%6d.{Type}"')
-    os.system(f'ffmpeg -i "{input}" -hide_banner "{input}_cain/1.wav"')
+    os.system(f'ffmpeg -i "{input}" -hide_banner {Line} -q 2 -pix_fmt rgb24 "{dir_path}/cain/frames/%6d.{Type}"')
+    os.system(f'ffmpeg -i "{input}" -hide_banner "{dir_path}/cain/1.wav"')
 
 
 
