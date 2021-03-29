@@ -15,6 +15,9 @@ import input_and_output
 from random import seed
 from random import random
 #######################
+import platform
+ossystem=platform.system()
+print(ossystem)
 
 def delete():
     try:
@@ -137,43 +140,61 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
       generate.interpolation(batch_size=10, img_fmt="png", torch_device="cuda", temp_img = f"frames", GPUid=1, GPUid2=False, fp16=False, modelp=f"models/{model_name}.pth")
     except Exception as e:
         await  ctx.channel.send(content=f"its oom? interpolation crashed❌\n{e}")
-    input_and_output.list_frame(dir="./frames", text_path="./")
     await message.edit(content="finished interpolation✨\n")
 
 
     ################ Using ffmpeg to encode video ################
+    if ossystem=='Linux':
+        print("skip")
+    else:
+        input_and_output.list_frame(dir="./frames", text_path="./")
 
 
     await message.edit(content=f"starting encoding🗄️➡️🎞️\n")
 
 
     ################ gif encoidng ################
+    if ossystem=='Linux':
+        if gifuse==True:
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -fs 7.95M "{filename}.mp4"')
+            filemp4=discord.File(f"{filename}.gif")
+            await ctx.channel.send(file=filemp4, content="finished!✔️")
+    else:
+        if gifuse==True:
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"   -fs 7.95M "{filename}.gif"')
+            filemp4=discord.File(f"{filename}.gif")
+            await ctx.channel.send(file=filemp4, content="finished!✔️")    
 
-
-    if gifuse==True:
-        os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"   -fs 7.95M "{filename}.gif"')#-preset veryslow
-        filemp4=discord.File(f"{filename}.gif")
-        await ctx.channel.send(file=filemp4, content="finished!✔️")
+            
+        
 
 
     ################ mp4 encoidng ################
-    try:
-        os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -vf hqdn3d  -tune hq -rc vbr -preset p7 -c:a libopus  -b:a 69k -fs 7.95M "{filename}.mp4"')#-preset veryslow
-        filemp4=discord.File(f"{filename}.mp4")
-
-        await ctx.channel.send(file=filemp4, content="finished!✔️")
-
-    except:
-        os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset p7   -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
-        filemp4=discord.File(f"{filename}.mp4")
-        await ctx.channel.send(file=filemp4, content="finished!✔️")
-        pass
-    torch.cuda.empty_cache()
-    try:
+    if ossystem=='Linux':
+        try:
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2                                       -tune hq -vf hqdn3d -rc vbr -fs 7.95M  "{filename}.mp4"')#-preset veryslow
+            filemp4=discord.File(f"{filename}.mp4")
+            await ctx.channel.send(file=filemp4, content="finished!✔️")
+        except:
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2   -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            filemp4=discord.File(f"{filename}.mp4")
+            await ctx.channel.send(file=filemp4, content="finished!✔️")
+        torch.cuda.empty_cache()
         os.remove(f"{filename}.mp4")
         os.remove(f"{filename}.gif")
-    except:
-        print("not deleted something hmm")
+    else:  
+        try:
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2                                       -tune hq -vf hqdn3d -rc vbr -fs 7.95M  "{filename}.mp4"')#-preset veryslow
+            filemp4=discord.File(f"{filename}.mp4")
+            await ctx.channel.send(file=filemp4, content="finished!✔️")
+        except:
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2   -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            filemp4=discord.File(f"{filename}.mp4")
+            await ctx.channel.send(file=filemp4, content="finished!✔️")
+        torch.cuda.empty_cache()
+        os.remove(f"{filename}.mp4")
+        os.remove(f"{filename}.gif")
+
 @bot.command()
 async def ping(ctx):
     await ctx.send(f'Pong! {int(bot.latency*100)}ms')
