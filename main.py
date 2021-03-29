@@ -16,7 +16,9 @@ import json
 import glob
 global OutputPath
 OutputPath=""
-
+import platform
+ossystem=platform.system()
+print(ossystem)
 ##############
 
 class UI(QMainWindow):
