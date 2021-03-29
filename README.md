@@ -45,7 +45,7 @@ So in theory, it could even run on a GTX 650
 
    `pip install opencv-python`
 
-   
+   `pip install opencv-python-headless`
 
    
 
