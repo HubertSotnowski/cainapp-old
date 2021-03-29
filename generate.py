@@ -6,6 +6,8 @@ import shutil
 import random
 import threading
 import torch
+import platform
+import os
 import numpy as np
 from tqdm import tqdm
 import utils
@@ -13,6 +15,8 @@ import utils
 
 def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=1, GPUid2=2, fp16=True, modelp="1.pth"):
     #torch.cuda.set_device(GPUid)
+    ossystem=platform.system()
+    print(ossystem)
     if fp16==True:
         torch.set_default_tensor_type(torch.cuda.HalfTensor)
     device = torch.device(torch_device)
@@ -35,8 +39,13 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
     start_epoch = checkpoint['epoch'] + 1
     model.load_state_dict(checkpoint['state_dict'])
     del checkpoint
-    def save():
+    if ossystem=='Linux':
+        def save():
+            utils.save_image(out[b], temp_img+"/"+savepath)
+    else:
+        def save():
             utils.save_image(out[b], temp_img[:-6]+savepath)
+
     def test():
         global savepath
         global images

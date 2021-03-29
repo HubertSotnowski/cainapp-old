@@ -5,6 +5,10 @@ import shutil
 import os.path
 import cv2
 import torch
+import platform
+ossystem=platform.system()
+print(ossystem)
+
 filename="test.mp4"
 def SelectInput():
     global filename
@@ -42,12 +46,12 @@ def  ExtractFramesOrSplit(Type="jpg", chunksize="00:01:00", dir_path="./",Line="
         try:
             shutil.rmtree(f'{dir_path}/cain')
             os.mkdir(f'{dir_path}/cain/')
-            os.mkdir(f'{dir_path}/cain/frames.')
+            os.mkdir(f'{dir_path}/cain/frames')
         except:
             print("wtf")
     else:
-        os.mkdir(f'{dir_path}/cain/')
-        os.mkdir(f'{dir_path}/cain/frames/')
+        os.mkdir(f'{dir_path}/cain')
+        os.mkdir(f'{dir_path}/cain/frames')
 
     os.system(f'ffmpeg -i "{input}" -hide_banner {Line} -q 2 -pix_fmt rgb24 "{dir_path}/cain/frames/%6d.{Type}"')
     os.system(f'ffmpeg -i "{input}" -hide_banner "{dir_path}/cain/1.wav"')
@@ -55,6 +59,10 @@ def  ExtractFramesOrSplit(Type="jpg", chunksize="00:01:00", dir_path="./",Line="
 
 
 def list_frame(dir="./frames", text_path="./frames"):
+    try:
+        os.remove(f'{text_path}/frame_list.txt')
+    except:
+        print("file exist")
     txt = open(f'{text_path}/frame_list.txt', 'a')
     for file in os.listdir(dir):
         print(os.path.join(dir, file))
@@ -72,11 +80,17 @@ def ExportVideo(dir_path, proresmode, type, fps, factor, filetype, useprores, li
         print(fpss)
         print(fps)
     #list_frame(dir=f"frames")
+    if ossystem=='Linux':
+        if useprores==True:
 
-
-    if filetype=="bik":
-        os.system(f'ffmpeg -f concat -safe 0 -r {float(fpss)} -i "{dir_path}frame_list.txt" -c:v h264_nvenc -b:v {bitrate} "{dir_path}/video.mp4"')
-        #os.system(f'ffmpeg -f concat -safe 0 -r {float(fpss)} -i "{dir_path}frame_list.txt" -c:v libvpx -b:v {bitrate} "{dir_path}/video.webm"')
+            os.system(f'ffmpeg -r {float(fpss)}  -pattern_type glob -i "{dir_path}frames/*.png"  -c:v prores_ks {line} -profile:v {proresmode} "{dir_path}/video.{filetype}"')
+            torch.cuda.empty_cache()
+        else:
+            os.system(f'ffmpeg -r {float(fpss)}  -pattern_type glob -i "{dir_path}frames/*.png" {line} "{dir_path}/video.{filetype}"')
+            torch.cuda.empty_cache()
+        if os.path.isfile(f"{dir_path}/1.wav"):
+            os.system(f'ffmpeg -i "{dir_path}/video.{filetype}"  -i "{dir_path}/1.wav" -c:v copy "{dir_path}/video_audio.mp4"')
+            torch.cuda.empty_cache()
     else:
 
         if useprores==True:
