@@ -72,7 +72,7 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
         ytdlurl=arg4
         ytdl=True
     #
-    embedVar = discord.Embed(title="Settings", description="", color=0x00ff00)
+    embedVar = discord.Embed(title="Settings", description="", color=0x4287f5)
     embedVar.add_field(name="Model", value=model_name, inline=False)
     embedVar.add_field(name="youtube-dl", value=ytdl, inline=False)
     embedVar.add_field(name="youtube-dl url", value=ytdlurl, inline=False)
