@@ -29,27 +29,30 @@ So in theory, it could even run on a GTX 650
 
 ## How to install 💾
 
+(Skip first 2 steps on ubuntu)
+
+
 1. Download python 3.9 📥 (https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe)
 
 2. Install python 3.9, and remember to select "Add to PATH"
 
 3. In cmd run 
 
-   `pip install pyqt5`
+   `pip3 install pyqt5`
 
-   `pip install qdarkstyle`
+   `pip3 install qdarkstyle`
 
-   `pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio===0.8.1 -f https://download.pytorch.org/whl/torch_stable.html` this can need much time ⌚
+   `pip3 install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio===0.8.1 -f https://download.pytorch.org/whl/torch_stable.html` this can need much time ⌚
 
-   `pip install tqdm`
+   `pip3 install tqdm`
 
    for windows:
 
-   `pip install opencv-python`
+   `pip3 install opencv-python`
 
    for linux:
 
-   `pip install opencv-python-headless`
+   `pip3 install opencv-python-headless`
 
    
 
