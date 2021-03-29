@@ -13,6 +13,7 @@ import input_and_output as input_and_output
 
 #############
 import json
+import time
 import glob
 global OutputPath
 OutputPath=""
@@ -38,7 +39,8 @@ class UI(QMainWindow):
             if self.comboBox_3.currentText()=="4444":
                  prores_mode=4
             input_and_output.list_frame(dir=f"{OutputPath}/cain/frames", text_path=f"{OutputPath}/cain/")
-            input_and_output.ExportVideo(dir_path=f"{OutputPath}/cain/", proresmode=prores_mode, type=self.comboBox_5.currentText(), fps=f"{video[0]}", factor=self.comboBox_2.currentText(), filetype=self.comboBox.currentText(), useprores=self.checkBox_3.isChecked(),line=self.lineEdit_3.text() )
+            time.sleep(2) 
+            input_and_output.ExportVideo(dir_path=f"{OutputPath}/cain/", proresmode=prores_mode, imtype=self.comboBox_5.currentText(), fps=f"{video[0]}", factor=self.comboBox_2.currentText(), filetype=self.comboBox.currentText(), useprores=self.checkBox_3.isChecked(),line=self.lineEdit_3.text() )
 
 
         def SelectVideo():
