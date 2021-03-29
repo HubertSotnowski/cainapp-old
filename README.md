@@ -57,23 +57,25 @@ So in theory, it could even run on a GTX 650
 
 5. Extract 📦 ffmpeg.exe in cainapp folder📁
 
-6. Download the model, rename it to stable.pth, and put it into the cain folder📁
+6. Download the model and put it into the cain folder📁
 
 7. In cmd, run ` cd path/to/cainapp/ ` then ```python main.py```
 
 ## How to run the discord bot🤖
 
-Basically the same as in How to install but you need to install 2 more things
+Basically the same as in How to install but you need to install 2 more things and do some arranging
 
 `pip install discord.py` 
 
 `pip install requests`
 
-And put your token to token.txt 
+Put your token in a file called `token.txt` in the main cain directory
+
+Take your model file from before, copy it to a folder named `models`, and rename it to stable.pth.
 
 And run ```python 1.py```
 
-Sadly, Discord limits the file size to 8MB, so bitrate isn't high and video length is limited. Audio is also only 69kbps
+Sadly, Discord limits the file size to 8MB, so bitrate isn't high and video length is limited. Audio bitrate is also only 69kbps
 
 As a note to windows users, python 3.9 only supports Windows 8+, so don't expect it to work with 7, if you were even planning on using that in the first place.
 
