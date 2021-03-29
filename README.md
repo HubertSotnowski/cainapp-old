@@ -62,21 +62,21 @@ So in theory, it could even run on a GTX 650
 
 6. Download the model and put it into the cain folder📁
 
-7. In cmd, run ` cd path/to/cainapp/ ` then ```python main.py```
+7. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
 
 ## How to run the discord bot🤖
 
 Basically the same as in How to install but you need to install 2 more things and do some arranging
 
-`pip install discord.py` 
+`pip3 install discord.py` 
 
-`pip install requests`
+`pip3 install requests`
 
 Put your token in a file called `token.txt` in the main cain directory
 
 Take your model file from before, copy it to a folder named `models`, and rename it to stable.pth.
 
-And run ```python 1.py```
+And run ```python3 1.py```
 
 Sadly, Discord limits the file size to 8MB, so bitrate isn't high and video length is limited. Audio bitrate is also only 69kbps
 
