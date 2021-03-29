@@ -57,6 +57,7 @@ async def gpu(ctx):
     await ctx.channel.send(content=f"bot run on {torch.cuda.get_device_name(0)}\nvram: {int(torch.cuda.get_device_properties('cuda').total_memory/1024/1024/1024)}GB")
 @bot.command()
 async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", arg4="x"):
+    wrong=False
     ytdl=False
     gifuse=False
     ytdlurl="none"
@@ -79,7 +80,14 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
     embedVar.add_field(name="Model", value=model_name, inline=False)
     embedVar.add_field(name="youtube-dl", value=ytdl, inline=False)
     embedVar.add_field(name="youtube-dl url", value=ytdlurl, inline=False)
-    if ytdlurl.isalnum():
+    for char in ytdlurl:
+        print(char)
+        if char==";":
+            
+            wrong=True
+        else:
+            print("good")
+    if wrong==False:
         print("good")
     else:
         ytdlurl="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
