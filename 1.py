@@ -124,7 +124,7 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
         frames = video.get(cv2.CAP_PROP_FRAME_COUNT)
         length = int(frames/fps)+2
         if length>75:
-            length=75
+            length=75+7
         bitrate = int(63200/length)
         await message.edit(content=f"bitrate {bitrate}K/s, fps: {fps*2}, frames: {frames}\n")
     except Exception as e:
@@ -184,11 +184,11 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
     ################ mp4 encoidng ################
     if ossystem=='Linux':
         try:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2                                       -tune hq -vf hqdn3d -rc vbr -fs 7.95M  "{filename}.mp4"')#-preset veryslow
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libx264 -preset veryslow -strict -2 -vf hqdn3d  -fs 7.95M  "{filename}.mp4"')#-preset veryslow
             filemp4=discord.File(f"{filename}.mp4")
             await ctx.channel.send(file=filemp4, content="finished!✔️")
         except:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2   -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libx264 -preset veryslow -strict -2 -vf hqdn3d  -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
             filemp4=discord.File(f"{filename}.mp4")
             await ctx.channel.send(file=filemp4, content="finished!✔️")
         torch.cuda.empty_cache()
