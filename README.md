@@ -43,7 +43,11 @@ So in theory, it could even run on a GTX 650
 
    `pip install tqdm`
 
+   for windows:
+
    `pip install opencv-python`
+
+   for linux:
 
    `pip install opencv-python-headless`
 
