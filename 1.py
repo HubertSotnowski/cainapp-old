@@ -213,13 +213,13 @@ async def models(ctx):
     '''Lists current models'''
     embed = discord.Embed(
         title="List of current models",
+        color=0x4287f5,
         description=cleandoc("""
             stable_e3 - stable model trained on vimeo90k i think can be good for most things
             
             Need more models.  dm  if you have cain model hubert#0069 
         """)
     )
-    
     await ctx.send(embed=embed)
 
 
