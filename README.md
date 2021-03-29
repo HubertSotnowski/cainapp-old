@@ -29,9 +29,9 @@ So in theory, it could even run on a GTX 650
 
 ## How to install 💾
 
-1. Download python 3.8 📥 (https://www.python.org/ftp/python/3.8.7/python-3.8.7-amd64.exe)
+1. Download python 3.9 📥 (https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe)
 
-2. Install python 3.8, and remember to select "Add to PATH"
+2. Install python 3.9, and remember to select "Add to PATH"
 
 3. In cmd run 
 
@@ -71,9 +71,11 @@ Basically the same as in How to install but you need to install 2 more things
 
 And put your token to token.txt 
 
-And run ```python3 1.py```
+And run ```python 1.py```
 
 Sadly, Discord limits the file size to 8MB, so bitrate isn't high and video length is limited. Audio is also only 69kbps
+
+As a note to windows users, python 3.9 only supports Windows 8+, so don't expect it to work with 7, if you were even planning on using that in the first place.
 
 ## How to train 🚆
 
