@@ -57,7 +57,7 @@ So in theory, it could even run on a GTX 650
 
 5. Extract 📦 ffmpeg.exe in cainapp folder📁
 
-6. Download models and put them into the cain folder📁
+6. Download the model, rename it to stable.pth, and put it into the cain folder📁
 
 7. In cmd, run ` cd path/to/cainapp/ ` then ```python main.py```
 
