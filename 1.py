@@ -74,11 +74,15 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
     if arg3=="--ytdl":
         ytdlurl=arg4
         ytdl=True
-    #
+
     embedVar = discord.Embed(title="Settings", description="", color=0x4287f5)
     embedVar.add_field(name="Model", value=model_name, inline=False)
     embedVar.add_field(name="youtube-dl", value=ytdl, inline=False)
     embedVar.add_field(name="youtube-dl url", value=ytdlurl, inline=False)
+    if ytdlurl.isalnum():
+        print("good")
+    else:
+        ytdlurl="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     await ctx.channel.send(embed=embedVar)
     filename=int(random()*1000000000)
     delete()
