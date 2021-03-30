@@ -51,7 +51,6 @@ def delete():
 #######################
 bot = commands.Bot(command_prefix='=')
 #def commands
-os.system("nvidia-smi -pl 70w")
 os.system("nvidia-smi")
 @bot.command()
 async def gpu(ctx):
