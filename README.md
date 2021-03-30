@@ -22,7 +22,7 @@ Cainapp is a gui for cain with some new things like fp16, saving frames on other
 
 Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-based version, so the only requirements are
 
-1. A nvidia GPU
+1. A NVidia GPU
 2. Driver version >396.26
 
 So in theory, it could even run on a GTX 650
@@ -67,11 +67,11 @@ So in theory, it could even run on a GTX 650
 ## How to install on ubuntu💾
 
 
-1. install git ```sudo apt install git```
+1. Install git ```sudo apt install git```
 
-2. clone cainapp ```git clone https://github.com/Hubert482/cainapp.git```
+2. Clone cainapp ```git clone https://github.com/Hubert482/cainapp.git```
 
-3. install python 3 pip ```sudo apt install python3-pip```
+3. Install python 3 pip ```sudo apt install python3-pip```
 
 4. In terminal run 
 
