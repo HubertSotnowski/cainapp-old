@@ -19,6 +19,8 @@ import platform
 ossystem=platform.system()
 print(ossystem)
 
+usevp9 = open("output_type.txt", "r")
+
 def delete():
     try:
         shutil.rmtree('frames/')
@@ -27,27 +29,31 @@ def delete():
     try:
         os.mkdir("frames")
     except:
-        print("bug")
+        print("Frames Not Cleared")
     try:
         os.remove("1.mkv")
     except:
-        print("bug")
+        print("1.mkv Undeleted")
     try:
         os.remove(f"{filename}.mp4")
     except:
-        print("bug")
+        print("Filename.mp4 Undeleted")
+    try:
+        os.remove(f"{filename}.webm")
+    except:
+        print("Filename.webm Undeleted")
     try:
         os.remove("1.wav")
     except:
-        print("bug")
+        print("1.wav Undeleted")
     try:
         os.remove("3.mp4")
     except:
-        print("bug")
+        print("3.mp4 Undeleted")
     try:
         os.remove("frame_list.txt")
     except:
-        print("bug")
+        print("Frame List Undeleted")
 #######################
 bot = commands.Bot(command_prefix='!')
 #def commands
@@ -56,12 +62,12 @@ os.system("nvidia-smi")
 async def gpu(ctx):
     await ctx.channel.send(content=f"bot run on {torch.cuda.get_device_name(0)}\nvram: {int(torch.cuda.get_device_properties('cuda').total_memory/1024/1024/1024)}GB")
 @bot.command()
-async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", arg4="x"):
+async def interpolate(ctx, arg1="--model",arg2="HubertV3", arg3="--discord", arg4="x"):
     wrong=False
     ytdl=False
     gifuse=False
     ytdlurl="none"
-    model_name="stable_e3"
+    model_name="HubertV3"
     ################  ################
 
     if arg1=="--model":
@@ -128,31 +134,31 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
         bitrate = int(63200/length)
         await message.edit(content=f"bitrate {bitrate}K/s, fps: {fps*2}, frames: {frames}\n")
     except Exception as e:
-        await  ctx.channel.send(content=f"error❌\n\n{e}")
+        await  ctx.channel.send(content=f"Error getting video info. :x:\n\n{e}")
 
 
     ################ Using ffmpeg to extract frames and audio ################
 
-    await message.edit(content=f"starting frame extraction🎞️\n")
+    await message.edit(content=f"Extracting Frames🎞️\n")
     if width<height:
         os.system(f"ffmpeg -i 1.mkv -vf scale=256:{int(((height/width)*256)/8)*8} -pix_fmt rgb24 -t 75 frames/%6d.png")
     else:
         os.system(f"ffmpeg -i 1.mkv -vf scale={int(((width/height)*256)/8)*8}:256 -pix_fmt rgb24 -t 75 frames/%6d.png")
     os.system("ffmpeg -i 1.mkv  -pix_fmt rgb24 -t 75 1.wav")
-    await message.edit(content="finished frame extracting🎞️\n")
+    await message.edit(content="Frames Extracted🎞️\n")
     if fps==0.0:
         fps=25
 
 
-    ################ using interpolation ################
+    ################ Interpolating ################
 
 
-    await message.edit(content="interpolating✨\n")
+    await message.edit(content="Interpolating :flushed:\n")
     try:
       generate.interpolation(batch_size=10, img_fmt="png", torch_device="cuda", temp_img = f"frames", GPUid=1, GPUid2=False, fp16=False, modelp=f"models/{model_name}.pth")
     except Exception as e:
-        await  ctx.channel.send(content=f"its oom? interpolation crashed❌\n{e}")
-    await message.edit(content="finished interpolation✨\n")
+        await  ctx.channel.send(content=f"Out of GPU memory, Interpolation crashed ❌\n{e}")
+    await message.edit(content="Finished interpolation :thumbsup:\n")
 
 
     ################ Using ffmpeg to encode video ################
@@ -162,20 +168,20 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
         input_and_output.list_frame(dir="./frames", text_path="./")
 
 
-    await message.edit(content=f"starting encoding🗄️➡️🎞️\n")
+    await message.edit(content=f"Encoding🗄️➡️🎞️\n")
 
 
-    ################ gif encoidng ################
+    ################ gif encoding ################
     if ossystem=='Linux':
         if gifuse==True:
             os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -fs 7.95M "{filename}.mp4"')
             filemp4=discord.File(f"{filename}.gif")
-            await ctx.channel.send(file=filemp4, content="finished!✔️")
+            await ctx.channel.send(file=filemp4, content="Finished!✔️\n Output:")
     else:
         if gifuse==True:
             os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"   -fs 7.95M "{filename}.gif"')
             filemp4=discord.File(f"{filename}.gif")
-            await ctx.channel.send(file=filemp4, content="finished!✔️")    
+            await ctx.channel.send(file=filemp4, content="Finished!✔️\n Output:")    
 
             
         
@@ -184,25 +190,25 @@ async def interpolate(ctx, arg1="--model",arg2="stable_e3", arg3="--discord", ar
     ################ mp4 encoidng ################
     if ossystem=='Linux':
         try:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libx264 -preset veryslow -strict -2 -vf hqdn3d  -fs 7.95M  "{filename}.mp4"')#-preset veryslow
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libx264 -preset veryslow -strict -2 -vf hqdn3d -fs 7.95M  "{filename}.mp4"')#-preset veryslow
             filemp4=discord.File(f"{filename}.mp4")
-            await ctx.channel.send(file=filemp4, content="finished!✔️")
+            await ctx.channel.send(file=filemp4, content="Finished!✔️\n Output:")
         except:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libx264 -preset veryslow -strict -2 -vf hqdn3d  -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libx264 -preset veryslow -strict -2 -vf hqdn3d -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
             filemp4=discord.File(f"{filename}.mp4")
-            await ctx.channel.send(file=filemp4, content="finished!✔️")
+            await ctx.channel.send(file=filemp4, content="Finished!✔️\n Output:")
         torch.cuda.empty_cache()
         os.remove(f"{filename}.mp4")
         os.remove(f"{filename}.gif")
     else:  
         try:
-            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2                                       -tune hq -vf hqdn3d -rc vbr -fs 7.95M  "{filename}.mp4"')#-preset veryslow
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -tune hq -vf hqdn3d -rc vbr -fs 7.95M  "{filename}.mp4"')#-preset veryslow
             filemp4=discord.File(f"{filename}.mp4")
-            await ctx.channel.send(file=filemp4, content="finished!✔️")
+            await ctx.channel.send(file=filemp4, content="Finished!✔️\n Output:")
         except:
-            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2   -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
             filemp4=discord.File(f"{filename}.mp4")
-            await ctx.channel.send(file=filemp4, content="finished!✔️")
+            await ctx.channel.send(file=filemp4, content="Finished!✔️\n Output:")
         torch.cuda.empty_cache()
         os.remove(f"{filename}.mp4")
         os.remove(f"{filename}.gif")
@@ -213,15 +219,15 @@ async def ping(ctx):
 #
 @bot.command()
 async def status(ctx):
-    await ctx.send('bot work. now..')
+    await ctx.send('Bot is currently working..')
 
 #
 @bot.command()
-async def verssion(ctx):
+async def version(ctx):
     versfile = open("ver.txt", "r")
     curverssion=versfile.read()
     r = requests.get('https://raw.githubusercontent.com/Hubert482/cainapp/main/ver.txt')
-    await ctx.send(f'this bot work on {curverssion}, latest verssion: {r.text}')
+    await ctx.send(f'This bot is using {curverssion}, Latest Version: {r.text}')
 
 #+
 @bot.command()
@@ -238,7 +244,7 @@ async def doge(ctx):
 #
 @bot.command()
 async def credits(ctx):
-    await ctx.channel.send(content="The bot was created by Hubert Sontowski")
+    await ctx.channel.send(content="This bot was created by Hubert Sontowski with the help of Dire Meganium97, Tika Takumika, and Anon Shiwo.")
 #
 @bot.command()
 
@@ -248,14 +254,14 @@ async def models(ctx):
         title="List of current models",
         color=0x4287f5,
         description=cleandoc("""
-            stable_e3 - stable model trained on vimeo90k i think can be good for most things
+            HubertV3 - stable model trained on vimeo90k i think can be good for most things
             
-            Need more models.  dm  if you have cain model hubert#0069 
+            We need more models! DM if you have CAIN model that can be added (hubert#0069) 
         """)
     )
     await ctx.send(embed=embed)
 
-
+usevp9 = open("output_type.txt", "r")
 tokenfile = open("token.txt", "r")
 TOKEN=tokenfile.read()
 bot.run(TOKEN)
