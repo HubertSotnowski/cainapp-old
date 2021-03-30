@@ -12,9 +12,11 @@ CAIN is a very fast interpolation network that doesn't use much vram (Ex: 5GB wi
 
 ### What is cainapp?
 
-##### 
+
 
 Cainapp is a gui for cain with some new things like fp16, saving frames on other threads and more! Look at the code!
+
+
 
 ## What are the requirements?
 
@@ -27,12 +29,14 @@ So in theory, it could even run on a GTX 650
 
 
 
-## How to install 💾
-
-(Skip first 2 steps on ubuntu)
+## How to install on windows💾
 
 
 1. Download python 3.9 📥 (https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe)
+
+   python 3.9 only supports Windows 8+, if you want run cain app on windows 7 use python 3.8
+
+   
 
 2. Install python 3.9, and remember to select "Add to PATH"
 
@@ -46,31 +50,48 @@ So in theory, it could even run on a GTX 650
 
    `pip3 install tqdm`
 
-   for windows 🪟:
-
    `pip3 install opencv-python`
-
-   for linux 🐧:
-
-   `pip3 install opencv-python-headless`
 
    
 
-4. for windows 🪟:
-
-   Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
+4. Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
 
    Extract 📦 ffmpeg.exe in cainapp folder📁
 
+5. Download the model and put it into the cain folder📁d
+
+6. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
+
    
 
-   for ubuntu 🐧:
+## How to install on ubuntu💾
+
+
+1. install git ```sudo apt install git```
+
+2. clone cainapp ```git clone https://github.com/Hubert482/cainapp.git```
+
+3. install python 3 pip ```sudo apt install python3-pip```
+
+4. In terminal run 
+
+   `pip3 install pyqt5`
+
+   `pip3 install qdarkstyle`
+
+   `pip3 install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio===0.8.1 -f https://download.pytorch.org/whl/torch_stable.html` this can need much time ⌚
+
+   `pip3 install tqdm`
+
+   `pip3 install opencv-python-headless`
 
    `sudo apt install ffmpeg`
 
 5. Download the model and put it into the cain folder📁
 
-6. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
+6. In terminal, run ` cd cainapp/ ` then ```python3 main.py```
+
+   
 
 ## How to run the discord bot🤖
 
@@ -87,8 +108,6 @@ Take your model file from before, copy it to a folder named `models`, and rename
 And run ```python3 1.py```
 
 Sadly, Discord limits the file size to 8MB, so bitrate isn't high and video length is limited. Audio bitrate is also only 69kbps
-
-As a note to windows users, python 3.9 only supports Windows 8+, so don't expect it to work with 7, if you were even planning on using that in the first place.
 
 ## How to train 🚆
 
