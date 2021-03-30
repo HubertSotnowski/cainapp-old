@@ -68,11 +68,9 @@ So in theory, it could even run on a GTX 650
 
    `sudo apt install ffmpeg`
 
-   
+5. Download the model and put it into the cain folder📁
 
-
-1. Download the model and put it into the cain folder📁
-2. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
+6. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
 
 ## How to run the discord bot🤖
 
