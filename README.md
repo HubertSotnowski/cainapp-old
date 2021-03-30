@@ -46,23 +46,33 @@ So in theory, it could even run on a GTX 650
 
    `pip3 install tqdm`
 
-   for windows:
+   for windows 🪟:
 
    `pip3 install opencv-python`
 
-   for linux:
+   for linux 🐧:
 
    `pip3 install opencv-python-headless`
 
    
 
-4. Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
+4. for windows 🪟:
 
-5. Extract 📦 ffmpeg.exe in cainapp folder📁
+   Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
 
-6. Download the model and put it into the cain folder📁
+   Extract 📦 ffmpeg.exe in cainapp folder📁
 
-7. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
+   
+
+   for ubuntu 🐧:
+
+   `sudo apt install ffmpeg`
+
+   
+
+
+1. Download the model and put it into the cain folder📁
+2. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
 
 ## How to run the discord bot🤖
 
