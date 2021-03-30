@@ -43,6 +43,10 @@ def delete():
     except:
         print("Filename.webm Undeleted")
     try:
+        os.remove(f"{filename}.gif")
+    except:
+        print("Filename.gif Undeleted")
+    try:
         os.remove("1.wav")
     except:
         print("1.wav Undeleted")
@@ -141,10 +145,10 @@ async def interpolate(ctx, arg1="--model",arg2="HubertV3", arg3="--discord", arg
 
     await message.edit(content=f"Extracting Frames🎞️\n")
     if width<height:
-        os.system(f"ffmpeg -i 1.mkv -vf scale=256:{int(((height/width)*256)/8)*8} -pix_fmt rgb24 -t 75 frames/%6d.png")
+        os.system(f"ffmpeg -i 1.mkv -vf scale=256:{int(((height/width)*256)/8)*8} -pix_fmt rgb24 frames/%6d.png")
     else:
-        os.system(f"ffmpeg -i 1.mkv -vf scale={int(((width/height)*256)/8)*8}:256 -pix_fmt rgb24 -t 75 frames/%6d.png")
-    os.system("ffmpeg -i 1.mkv  -pix_fmt rgb24 -t 75 1.wav")
+        os.system(f"ffmpeg -i 1.mkv -vf scale={int(((width/height)*256)/8)*8}:256 -pix_fmt rgb24 frames/%6d.png")
+    os.system("ffmpeg -i 1.mkv -pix_fmt rgb24 1.wav")
     await message.edit(content="Frames Extracted🎞️\n")
     if fps==0.0:
         fps=25
@@ -200,18 +204,20 @@ async def interpolate(ctx, arg1="--model",arg2="HubertV3", arg3="--discord", arg
         torch.cuda.empty_cache()
         os.remove(f"{filename}.mp4")
         os.remove(f"{filename}.gif")
+        os.remove(f"{filename}.webm")
     else:  
         try:
-            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -tune hq -vf hqdn3d -rc vbr -fs 7.95M  "{filename}.mp4"')#-preset veryslow
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264 -preset hq -strict -2 -tune hq -vf hqdn3d -rc vbr -fs 7.95M  "{filename}.mp4"')#-preset veryslow
             filemp4=discord.File(f"{filename}.mp4")
             await ctx.channel.send(file=filemp4, content="Finished!✔️\n Output:")
         except:
-            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264 -preset hq -strict -2 -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
             filemp4=discord.File(f"{filename}.mp4")
             await ctx.channel.send(file=filemp4, content="Finished!✔️\n Output:")
         torch.cuda.empty_cache()
         os.remove(f"{filename}.mp4")
         os.remove(f"{filename}.gif")
+        os.remove(f"{filename}.webm")
 
 @bot.command()
 async def ping(ctx):
