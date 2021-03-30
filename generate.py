@@ -32,9 +32,10 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
 
     #  model to device
     if GPUid2==True:
-        model = torch.nn.DataParallel(model, device_ids=[GPUid])
-    else:
         model = torch.nn.DataParallel(model).to("cuda")
+    else:
+        model = torch.nn.DataParallel(model, device_ids=[GPUid])
+        
     checkpoint = torch.load(modelp)
     start_epoch = checkpoint['epoch'] + 1
     model.load_state_dict(checkpoint['state_dict'])
