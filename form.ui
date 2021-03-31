@@ -667,6 +667,19 @@
      </property>
     </item>
    </widget>
+   <widget class="QCheckBox" name="checkBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>220</y>
+      <width>211</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>resume (expeprimental work only for 2x)</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="label_15">
    <property name="geometry">

@@ -28,6 +28,7 @@ class UI(QMainWindow):
         def SelectOutput():
             global OutputPath
             OutputPath = input_and_output.select_path()
+            self.label_14.setText(OutputPath)
         def encode():
             os.system('del "frame_list.txt"')
             if self.comboBox_3.currentText()=="lt":
@@ -51,7 +52,6 @@ class UI(QMainWindow):
             self.comboBox_3.setCurrentText(load[5])
             self.comboBox_2.setCurrentText(load[6])
             self.checkBox_4.setChecked(load[7])
-            print(load[8])
             self.comboBox_6.setCurrentText(load[8])
             self.comboBox_4.setCurrentText(load[9])
             self.checkBox_7.setChecked(load[10])
@@ -61,6 +61,7 @@ class UI(QMainWindow):
         def SelectVideo():
             global video
             video = input_and_output.SelectInput()
+            self.label_15.setText(video[2])
             if video[5]==True:
                  self.lineEdit.setText(f"-vf scale={round(round(round(video[4])/8)*8)}:{round(round(round(video[3])/8)*8)}:flags=lanczos")
 
