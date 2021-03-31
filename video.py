@@ -23,6 +23,8 @@ class Video(Dataset):
         images = sorted(glob.glob(os.path.join(data_root, '*.%s' % fmt)))
         self.imglist = [[images[i], images[i+1]] for i in range(len(images)-1)]
         print('[%d] images ready to be loaded' % len(self.imglist))
+        img2="nothing"
+        img1="nothing"
 
 
     def __getitem__(self, index):
