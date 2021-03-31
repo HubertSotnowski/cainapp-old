@@ -68,6 +68,8 @@ def list_frame(dir="./frames", text_path="./frames"):
         print(os.path.join(dir, file))
         string = (f"file 'frames/{os.path.join(file)}'\n")
         txt.write(string)
+    txt.close()
+    
 
 
 def ExportVideo(dir_path, proresmode, imtype, fps, factor, filetype, useprores, line):
