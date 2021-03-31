@@ -1,0 +1,12 @@
+
+png
+-c:v h264_nvenc -b:a 300k -cq 10
+mp4
+False
+lt
+2x
+True
+5
+stable_e3.pth
+False
+0

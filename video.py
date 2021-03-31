@@ -30,7 +30,10 @@ class Video(Dataset):
         T = transforms.ToTensor()
         img1 = T(img1)
         img2 = T(img2)
-
+        #
+        #
+        #
+        #
         imgs = [img1, img2] 
         meta = {'imgpath': imgpaths}
         return imgs, meta
