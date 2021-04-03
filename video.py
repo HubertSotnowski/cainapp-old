@@ -1,4 +1,5 @@
 import os
+
 import glob
 import numpy as np
 import torch
@@ -6,6 +7,19 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
 
+global img1
+global img2
+img2="nothing"
+img1="nothing"
+framenum=0
+
+def clean():
+    global img1
+    global img2
+    print(img1)
+    print(img2)
+    img1="nothing"
+    img2="nothing"
 class Video(Dataset):
     def __init__(self, data_root, fmt='png'):
         images = sorted(glob.glob(os.path.join(data_root, '*.%s' % fmt)))
@@ -17,23 +31,36 @@ class Video(Dataset):
         # re
         images = sorted(glob.glob(os.path.join(data_root, '*.%s' % fmt)))
         self.imglist = [[images[i], images[i+1]] for i in range(len(images)-1)]
+        img2="nothing"
+        img1="nothing"
         print('[%d] images ready to be loaded' % len(self.imglist))
 
 
+
     def __getitem__(self, index):
-        imgpaths = self.imglist[index]
-
-        # Load images
-        img1 = Image.open(imgpaths[0])
-        img2 = Image.open(imgpaths[1])
-
         T = transforms.ToTensor()
-        img1 = T(img1)
-        img2 = T(img2)
-        #
-        #
-        #
-        #
+        global img1
+        global img2
+        imgpaths = self.imglist[index]
+        if img1=="nothing":
+            img1 = Image.open(imgpaths[0])
+        else:
+            img1=img2
+        img2 = Image.open(imgpaths[1])
+        #img2 = Image.open(imgpaths[1])
+        #print(img1)
+        #print(img2)
+        
+
+        if torch.is_tensor(img1):
+            somevar=False
+        else:
+            img1 = T(img1)
+        if torch.is_tensor(img2):
+            somevar=False
+        else:
+            img2 = T(img2)        
+        #img2 = T(img2)
         imgs = [img1, img2] 
         meta = {'imgpath': imgpaths}
         return imgs, meta

@@ -7,6 +7,7 @@ import random
 import threading
 import torch
 import platform
+import video
 import os
 import numpy as np
 from tqdm import tqdm
@@ -99,7 +100,9 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                     tsave.start()
 
     #
+    
     test()
+    video.clean()
 
 
 
