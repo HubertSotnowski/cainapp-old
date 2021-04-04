@@ -14,33 +14,19 @@ from tqdm import tqdm
 import utils
 
 
+
 def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=1, GPUid2=2, fp16=True, modelp="1.pth"):
     #torch.cuda.set_device(GPUid)
     ossystem=platform.system()
     print(ossystem)
-    if fp16==True:
-        torch.set_default_tensor_type(torch.cuda.HalfTensor)
     device = torch.device(torch_device)
     torch.backends.cudnn.enabled = True
     torch.backends.cudnn.benchmark = True
     torch.manual_seed(5325)
     torch.cuda.manual_seed(5325)
-    from cain import CAIN
-    model = CAIN(3)
-    if fp16==True:
-        model.half()
-    
-
-    #  model to device
-    if GPUid2==True:
-        model = torch.nn.DataParallel(model).to("cuda")
-    else:
-        model = torch.nn.DataParallel(model, device_ids=[GPUid])
-        
-    checkpoint = torch.load(modelp)
-    start_epoch = checkpoint['epoch'] + 1
-    model.load_state_dict(checkpoint['state_dict'])
-    del checkpoint
+    from torch2trt import TRTModule
+    model_trt = TRTModule()
+    model_trt.load_state_dict(torch.load(modelp))
     if ossystem=='Linux':
         def save():
             utils.save_image(out[b], temp_img+"/"+savepath)
@@ -67,14 +53,10 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
             for i, (images, meta) in enumerate(tqdm(test_loader)):
 
                 # Build input batch
-                if fp16==True:
-                    im1, im2 = images[0].to(device).half(), images[1].to(device).half()
-                else:
-                    im1, im2 = images[0].to(device), images[1].to(device)
-
+                im1, im2 = images[0].to(device).half(), images[1].to(device).half()
 
                 # Forward
-                out, _ = model(im1, im2)
+                out, _ = model_trt(im1, im2)
                 for b in range(images[0].size(0)):
                     paths = meta['imgpath'][0][b].split('/')
                     fp = temp_img

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>759</width>
+    <width>750</width>
     <height>521</height>
    </rect>
   </property>
@@ -475,22 +475,6 @@
      <string>Interpolation factor</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>70</y>
-      <width>102</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>half precision</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="checkBox_7">
     <property name="geometry">
      <rect>
@@ -511,7 +495,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>130</y>
+      <y>70</y>
       <width>102</width>
       <height>20</height>
      </rect>
@@ -524,7 +508,7 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>130</y>
+      <y>70</y>
       <width>141</width>
       <height>20</height>
      </rect>
@@ -540,7 +524,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>160</y>
+      <y>100</y>
       <width>41</width>
       <height>21</height>
      </rect>
@@ -553,7 +537,7 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>160</y>
+      <y>100</y>
       <width>141</width>
       <height>20</height>
      </rect>
@@ -563,7 +547,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>190</y>
+      <y>130</y>
       <width>102</width>
       <height>20</height>
      </rect>
@@ -576,7 +560,7 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>190</y>
+      <y>130</y>
       <width>139</width>
       <height>20</height>
      </rect>
@@ -667,19 +651,6 @@
      </property>
     </item>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>220</y>
-      <width>211</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>resume (expeprimental work only for 2x)</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QLabel" name="label_15">
    <property name="geometry">
@@ -720,14 +691,14 @@
   <widget class="QPushButton" name="pushButton_6">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>-10</x>
      <y>0</y>
      <width>171</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
-    <string>save settings look at github repo</string>
+    <string>save settings</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_7">
@@ -740,7 +711,23 @@
     </rect>
    </property>
    <property name="text">
-    <string>load</string>
+    <string>load (beta)</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_4">
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>120</y>
+     <width>102</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>half precision</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

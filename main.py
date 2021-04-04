@@ -18,6 +18,8 @@ import glob
 global OutputPath
 OutputPath=""
 import platform
+os.system("export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64")
+
 ossystem=platform.system()
 print(ossystem)
 ##############

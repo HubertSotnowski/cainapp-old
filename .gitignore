@@ -14,3 +14,5 @@ frame_list.txt
 token.txt
 *.mp4
 *.spec
+*.mov
+libnvrtc-builtins.so.11.1
