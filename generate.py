@@ -30,8 +30,9 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         model_trt = TRTModule()
         model_trt.load_state_dict(torch.load(modelp))
     else:
+        from model.cain import CAIN
         model = CAIN(depth=3)
-        checkpoint = torch.load("temp_conv.pth")
+        checkpoint = torch.load(modelp)
         model.load_state_dict(checkpoint)
         model.cuda().half() 
     if ossystem=='Linux':
