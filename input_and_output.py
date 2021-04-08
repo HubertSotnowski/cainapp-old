@@ -84,7 +84,7 @@ def ExportVideo(dir_path, proresmode, imtype, fps, factor, filetype, useprores, 
     #list_frame(dir=f"frames")
     if ossystem=='Linux':
         if useprores==True:
-
+            print("prores")
             os.system(f'ffmpeg -r {float(fpss)}  -pattern_type glob -i "{dir_path}frames/*.{imtype}"  -c:v prores_ks {line} -profile:v {proresmode} "{dir_path}/video.{filetype}"')
             torch.cuda.empty_cache()
         else:

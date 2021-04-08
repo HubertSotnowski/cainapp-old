@@ -7,6 +7,6 @@ lt
 2x
 True
 5
-stable_e3.pth
+temp_conv.pth
 False
 0
