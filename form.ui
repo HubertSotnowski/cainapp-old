@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
+    <width>755</width>
     <height>521</height>
    </rect>
   </property>
@@ -475,22 +475,6 @@
      <string>Interpolation factor</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_7">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>100</y>
-      <width>102</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>multi gpu mode</string>
-    </property>
-    <property name="checkable">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_12">
     <property name="geometry">
      <rect>
@@ -651,6 +635,19 @@
      </property>
     </item>
    </widget>
+   <widget class="QCheckBox" name="checkBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>92</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TRT</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="label_15">
    <property name="geometry">
@@ -727,6 +724,22 @@
     <string>half precision</string>
    </property>
    <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_7">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>370</y>
+     <width>102</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>multi gpu mode</string>
+   </property>
+   <property name="checkable">
     <bool>true</bool>
    </property>
   </widget>
