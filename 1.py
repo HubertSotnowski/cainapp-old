@@ -123,6 +123,8 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
         height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float `height` round(width)
         frames = video.get(cv2.CAP_PROP_FRAME_COUNT)
         length = int(frames/fps)+2
+        if length>80:
+            length=80+7
         bitrate = int(63200/length)
         await message.edit(content=f"bitrate {bitrate}K/s, fps: {fps*2}, frames: {frames}\n")
     except Exception as e:
@@ -171,12 +173,12 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
             filemp4=discord.File(f"{filename}.gif")
             await ctx.channel.send(file=filemp4, content="finished!✔️")    
 
-    ################ mp4 encoidng ################
+    ################ mp4 encoidng ################-b:v {bitrate-69}k  -rc 1
     if ossystem=='Linux':
         if os.path.isfile('1.wav'):
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libsvt_vp9 -vf scale={int(width)}:{int(height)} -vf hqdn3d -qp 48 -preset 7 -b:a 69k -fs 7.50M  "{filename}.webm"')#-preset veryslow
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libsvt_vp9 -vf scale={int(width)}:{int(height)} -b:v {bitrate-69}k  -rc 1 -vf hqdn3d -preset 7 -b:a 69k -fs 7.90M  "{filename}.webm"')#-preset veryslow
         else:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libsvt_vp9 -vf scale={int(width)}:{int(height)}  -qp 48 -preset 7  -vf hqdn3d -b:a 69k -fs 7.50M "{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libsvt_vp9 -vf scale={int(width)}:{int(height)}  -preset 7 -b:v {bitrate-69}k  -rc 1 -vf hqdn3d -b:a 69k -fs 7.90M "{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
         filemp4=discord.File(f"{filename}.webm")
     else:  
         if os.path.isfile('1.wav'):
