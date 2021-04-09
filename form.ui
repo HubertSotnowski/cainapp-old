@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>757</width>
-    <height>517</height>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -270,11 +270,11 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
-     <string>Tab 1</string>
+     <string>input/output settings</string>
     </attribute>
     <widget class="QLabel" name="label_3">
      <property name="geometry">
@@ -523,7 +523,7 @@
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
-     <string>Tab 2</string>
+     <string>AI settings</string>
     </attribute>
     <widget class="QComboBox" name="comboBox_2">
      <property name="geometry">
@@ -734,7 +734,7 @@
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
-     <string>Strona</string>
+     <string>UI settings</string>
     </attribute>
     <widget class="QPushButton" name="pushButton_6">
      <property name="geometry">
@@ -754,7 +754,7 @@
       <rect>
        <x>10</x>
        <y>60</y>
-       <width>161</width>
+       <width>171</width>
        <height>23</height>
       </rect>
      </property>
@@ -763,6 +763,19 @@
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QProgressBar" name="progressBar">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>750</y>
+     <width>721</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="value">
+    <number>24</number>
+   </property>
   </widget>
  </widget>
  <resources/>
