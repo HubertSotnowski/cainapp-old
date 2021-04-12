@@ -91,13 +91,14 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                     savepath = "%s_%06f.%s" % (fp[:fpos], fInd, img_fmt)
                     tsave = threading.Thread(target=save)
                     tsave.start()
-
-    #
+         
     
     test()
     video.clean()
-
-
+    try:
+        del model
+    except:
+        del model_trt
 
 
 

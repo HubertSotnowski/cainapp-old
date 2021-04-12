@@ -123,8 +123,8 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
         height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float `height` round(width)
         frames = video.get(cv2.CAP_PROP_FRAME_COUNT)
         length = int(frames/fps)+2
-        if length>80:
-            length=80+7
+        if length>70:
+            length=80
         bitrate = int(63200/length)
         await message.edit(content=f"bitrate {bitrate}K/s, fps: {fps*2}, frames: {frames}\n")
     except Exception as e:
@@ -164,7 +164,7 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
     ################ gif encoidng ################
     if ossystem=='Linux':
         if gifuse==True:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -fs 7.95M "{filename}.mp4"')
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -fs 7.95M "{filename}.gif"')
             filemp4=discord.File(f"{filename}.gif")
             await ctx.channel.send(file=filemp4, content="finished!✔️")
     else:
@@ -174,19 +174,23 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
             await ctx.channel.send(file=filemp4, content="finished!✔️")    
 
     ################ mp4 encoidng ################-b:v {bitrate-69}k  -rc 1
+    if width>1280:
+        width=(width/height)*720
+    if height>720:
+        height=720
     if ossystem=='Linux':
         if os.path.isfile('1.wav'):
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libsvt_vp9 -vf scale={int(width)}:{int(height)} -b:v {bitrate-69}k  -rc 1 -vf hqdn3d -preset 7 -b:a 69k -fs 7.90M  "{filename}.webm"')#-preset veryslow
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {int((bitrate-69)*0.40)}k -preset 7 -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -b:v {bitrate-69}k  -rc 1 -b:a 69k -fs 7.20M  "{filename}.webm"')#-preset veryslow
         else:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {bitrate-69}k -pix_fmt yuv420p -c:v libsvt_vp9 -vf scale={int(width)}:{int(height)}  -preset 7 -b:v {bitrate-69}k  -rc 1 -vf hqdn3d -b:a 69k -fs 7.90M "{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {int((bitrate-69)*0.40)}k -preset 7  -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -b:v {bitrate-69}k  -rc 1  -b:a 69k -fs 7.20M "{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
         filemp4=discord.File(f"{filename}.webm")
     else:  
         if os.path.isfile('1.wav'):
-            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -vf scale={int(width)}:{int(height)} -c:v h264_nvenc -preset hq -strict -2  -tune hq -vf hqdn3d -rc vbr -fs 7.95M  "{filename}.mp4"')
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2  -tune hq -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -rc vbr -fs 7.95M  "{filename}.mp4"')
         else:
-            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -vf scale={int(width)}:{int(height)}  -tune hq -vf hqdn3d -rc vbr -fs 7.95M "{filename}.mp4"')
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -tune hq -vf  -rc vbr -fs 7.95M "{filename}.mp4"')
+        
         filemp4=discord.File(f"{filename}.mp4")
-    
     
     await ctx.channel.send(file=filemp4, content="finished!✔️")
     os.remove(f"{filename}.mp4")
