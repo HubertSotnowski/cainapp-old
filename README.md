@@ -112,7 +112,7 @@ Converting model to tensorRT:
 
    ```cd cain-tools```
 
-2. convert your model! ```python3 conv_model.py --width {width of model} --height {height of model} --input "{input model path}" `` 
+2. convert your model! ```python3 conv_model.py --width {width of model} --height {height of model} --input "{input model path}" ``` 
 
 3. copy ```converted.pth``` to cainapp folder and run!
 
