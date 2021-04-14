@@ -145,7 +145,7 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
 
     await message.edit(content="interpolating✨\n")
     try:
-      generate.interpolation(batch_size=3, img_fmt="png", torch_device="cuda", temp_img = f"frames", GPUid=0, GPUid2=False, fp16=True, modelp=f"{model_name}.pth", TensorRT=True)
+      generate.interpolation(batch_size=1, img_fmt="png", torch_device="cuda", temp_img = f"frames", GPUid=0, GPUid2=False, fp16=True, modelp=f"{model_name}.pth", TensorRT=True)
     except Exception as e:
         await  ctx.channel.send(content=f"its oom? interpolation crashed❌\n{e}")
     await message.edit(content="finished interpolation✨\n")
@@ -180,10 +180,13 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
         height=720
     if ossystem=='Linux':
         if os.path.isfile('1.wav'):
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {int((bitrate-69)*0.40)}k -preset 7 -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -b:v {bitrate-69}k  -rc 1 -b:a 69k -fs 7.20M  "{filename}.webm"')#-preset veryslow
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {int((bitrate-69)*0.30)}k -preset 7 -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -b:v {bitrate-69}k  -rc 1 -b:a 69k -fs 7.40M  "SPOILER_{filename}.webm"')#-preset veryslow
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {int((bitrate-69))}k   -b:v {bitrate-69}k  -c:v h264_nvenc -b:a 69k -fs 7.90M  "{filename}.mp4"')
         else:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {int((bitrate-69)*0.40)}k -preset 7  -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -b:v {bitrate-69}k  -rc 1  -b:a 69k -fs 7.20M "{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
-        filemp4=discord.File(f"{filename}.webm")
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {int((bitrate-69)*0.30)}k -preset 7  -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -b:v {bitrate-69}k  -rc 1  -b:a 69k -fs 7.40M "SPOILER_{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png"  -b:v {int((bitrate-69))}k  -pix_fmt yuv420p -b:v {bitrate-69}k  -c:v h264_nvenc -b:a 69k -fs 7.90M  "{filename}.mp4"')
+        filemp4=discord.File(f"SPOILER_{filename}.webm")
+        filemp41=discord.File(f"{filename}.mp4")
     else:  
         if os.path.isfile('1.wav'):
             os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2  -tune hq -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -rc vbr -fs 7.95M  "{filename}.mp4"')
@@ -191,8 +194,12 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
             os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -tune hq -vf  -rc vbr -fs 7.95M "{filename}.mp4"')
         
         filemp4=discord.File(f"{filename}.mp4")
+    try:
+        await ctx.channel.send(file=filemp41, content="mp4 look bad but not crash discord...✔️")
+        await ctx.channel.send(file=filemp4, content="WEBM better but can crash discord✔️")
+    except:
+        await ctx.channel.send(file=filemp4, content="finished!✔️")
     
-    await ctx.channel.send(file=filemp4, content="finished!✔️")
     os.remove(f"{filename}.mp4")
     os.remove(f"{filename}.gif")
     torch.cuda.empty_cache()

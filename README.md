@@ -91,7 +91,34 @@ So in theory, it could even run on a GTX 650
 
 6. In terminal, run ` cd cainapp/ ` then ```python3 main.py```
 
-   
+
+
+
+**Optional:**
+
+**How to install tensorRT and torch2trt:**
+
+1. install tensorRT: https://docs.nvidia.com/deeplearning/tensorrt/install-guide/index.html
+
+2. ```bash
+   git clone https://github.com/Hubert482/torch2trt/
+   cd torch2trt
+   python3 setup.py install
+   ```
+
+Converting model to tensorRT:
+
+1. download model converter ```git clone https://github.com/Hubert482/cain-tools.git ```
+
+   ```cd cain-tools```
+
+2. convert your model! ```python3 conv_model.py --width {width of model} --height {height of model} --input "{input model path}" `` 
+
+3. copy ```converted.pth``` to cainapp folder and run!
+
+   if you have some problems with it dm me on discord `hubert#0069`
+
+
 
 ## How to run the discord bot🤖
 
