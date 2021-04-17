@@ -173,10 +173,10 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
         height=720
     if ossystem=='Linux':
         if os.path.isfile('1.wav'):
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -preset 7 -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -qp 51 -b:a 69k -fs 7.40M -hide_banner -loglevel error "SPOILER_{filename}.webm"')#-preset veryslow
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -preset 7 -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -qp 50 -b:a 69k -fs 7.40M -hide_banner -loglevel error "SPOILER_{filename}.webm"')#-preset veryslow
             os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {int((bitrate-69))}k  -c:a libopus -b:v {bitrate-69}k  -c:v h264_nvenc -b:a 69k -fs 7.90M  "{filename}.mp4"')
         else:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -preset 7  -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -rc 1 -hide_banner -loglevel error -b:a 69k -fs 7.40M "SPOILER_{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -preset 7  -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d -qp 50   -hide_banner -loglevel error -b:a 69k -fs 7.40M "SPOILER_{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
             os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png"  -b:v {int((bitrate-69))}k  -pix_fmt yuv420p -b:v {bitrate-69}k  -c:v h264_nvenc -b:a 69k -fs 7.90M  "{filename}.mp4"')
         filwebm=discord.File(f"SPOILER_{filename}.webm")
         filemp4=discord.File(f"{filename}.mp4")
@@ -184,7 +184,7 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
         if os.path.isfile('1.wav'):
             os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2  -tune hq -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -rc vbr -fs 7.95M  "{filename}.mp4"')
         else:
-            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -tune hq -vf  -rc vbr -fs 7.95M "{filename}.mp4"')
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -tune hq   -rc vbr -fs 7.95M "{filename}.mp4"')
         
         filemp4=discord.File(f"{filename}.mp4")
     if ossystem=='Linux':
