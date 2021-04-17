@@ -20,3 +20,6 @@ libnvrtc-builtins.so.11.1
 *.webm
 *.gif
 *.mkv
+*.desktop
+vidpla.py
+play.ui

@@ -91,7 +91,7 @@ def ExportVideo(dir_path, proresmode, imtype, fps, factor, filetype, useprores, 
             os.system(f'ffmpeg -r {float(fpss)}  -pattern_type glob -i "{dir_path}frames/*.{imtype}" {line} "{dir_path}/video.{filetype}"')
             torch.cuda.empty_cache()
         if os.path.isfile(f"{dir_path}/1.wav"):
-            os.system(f'ffmpeg -i "{dir_path}/video.{filetype}"  -i "{dir_path}/1.wav" -c:v copy "{dir_path}/video_audio.mp4"')
+            os.system(f'ffmpeg -i "{dir_path}/video.{filetype}"  -i "{dir_path}/1.wav" -b:a 320k -c:v copy "{dir_path}/video_audio.mp4"')
             torch.cuda.empty_cache()
     else:
 

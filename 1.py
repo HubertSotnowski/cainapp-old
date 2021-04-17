@@ -23,31 +23,31 @@ def delete():
     try:
         shutil.rmtree('frames/')
     except:
-        print("bug")
+        _="c"
     try:
         os.mkdir("frames")
     except:
-        print("bug")
+        _="c"
     try:
         os.remove("1.mkv")
     except:
-        print("bug")
+        _="c"
     try:
         os.remove(f"{filename}.mp4")
     except:
-        print("bug")
+        _="c"
     try:
         os.remove("1.wav")
     except:
-        print("bug")
+        _="c"
     try:
         os.remove("3.mp4")
     except:
-        print("bug")
+        _="c"
     try:
         os.remove("frame_list.txt")
     except:
-        print("bug")
+        _="c"
 #######################
 bot = commands.Bot(command_prefix='!')
 #def commands
@@ -81,15 +81,10 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
     embedVar.add_field(name="youtube-dl", value=ytdl, inline=False)
     embedVar.add_field(name="youtube-dl url", value=ytdlurl, inline=False)
     for char in ytdlurl:
-        print(char)
         if char==";":
             
             wrong=True
-        else:
-            print("good")
-    if wrong==False:
-        print("good")
-    else:
+    if wrong==True:
         ytdlurl="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     await ctx.channel.send(embed=embedVar)
     filename=int(random()*100000000000000)
@@ -102,7 +97,7 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
 
     if ytdl==True:
         print("using youtube-dl")
-        os.system(f"youtube-dl -o 1 --merge-output-format mkv {ytdlurl}")
+        os.system(f"youtube-dl -o 1 --quiet --merge-output-format mkv {ytdlurl}")
     else:
         attachment = ctx.message.attachments[0] # gets first attachment that user
         os.system(f"wget --output-document=1.mkv {attachment.url}")
@@ -133,8 +128,8 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
 
     ################ Using ffmpeg to extract frames and audio ################
     
-    os.system(f"ffmpeg -i 1.mkv -vf scale=640:360 -pix_fmt rgb24 -t 80 frames/%6d.png")
-    os.system(f"ffmpeg -i 1.mkv -t 80 1.wav")
+    os.system(f"ffmpeg -i 1.mkv -hide_banner -loglevel error -vf scale=640:360 -pix_fmt rgb24 -t 80 frames/%6d.png")
+    os.system(f"ffmpeg -i 1.mkv  -hide_banner -loglevel error -t 80 1.wav")
     if fps==0.0:
         fps=25
     await message.edit(content="finished frame extracting🎞️\n")
@@ -164,14 +159,12 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
     ################ gif encoidng ################
     if ossystem=='Linux':
         if gifuse==True:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -fs 7.95M "{filename}.gif"')
-            filemp4=discord.File(f"{filename}.gif")
-            await ctx.channel.send(file=filemp4, content="finished!✔️")
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -hide_banner -loglevel error -fs 7.95M "{filename}.gif"')
+            filegif=discord.File(f"{filename}.gif")
     else:
         if gifuse==True:
-            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"   -fs 7.95M "{filename}.gif"')
-            filemp4=discord.File(f"{filename}.gif")
-            await ctx.channel.send(file=filemp4, content="finished!✔️")    
+            os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -filter_complex "scale={int(width)}:{int(height)}:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"    -hide_banner -loglevel error -fs 7.95M "{filename}.gif"')
+            filegif=discord.File(f"{filename}.gif")
 
     ################ mp4 encoidng ################-b:v {bitrate-69}k  -rc 1
     if width>1280:
@@ -180,13 +173,13 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
         height=720
     if ossystem=='Linux':
         if os.path.isfile('1.wav'):
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {int((bitrate-69)*0.30)}k -preset 7 -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -b:v {bitrate-69}k  -rc 1 -b:a 69k -fs 7.40M  "SPOILER_{filename}.webm"')#-preset veryslow
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {int((bitrate-69))}k   -b:v {bitrate-69}k  -c:v h264_nvenc -b:a 69k -fs 7.90M  "{filename}.mp4"')
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -preset 7 -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -qp 51 -b:a 69k -fs 7.40M -hide_banner -loglevel error "SPOILER_{filename}.webm"')#-preset veryslow
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -i 1.wav  -b:v {int((bitrate-69))}k  -c:a libopus -b:v {bitrate-69}k  -c:v h264_nvenc -b:a 69k -fs 7.90M  "{filename}.mp4"')
         else:
-            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -b:v {int((bitrate-69)*0.30)}k -preset 7  -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -b:v {bitrate-69}k  -rc 1  -b:a 69k -fs 7.40M "SPOILER_{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
+            os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png" -preset 7  -pix_fmt yuv420p -c:v libsvt_vp9 -tune 0 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -rc 1 -hide_banner -loglevel error -b:a 69k -fs 7.40M "SPOILER_{filename}.webm"')#-vf scale={int((width/height)*320)/8*8}:320:flags=lanczos
             os.system(f'ffmpeg -r {fps*2} -pattern_type glob -i "frames/*.png"  -b:v {int((bitrate-69))}k  -pix_fmt yuv420p -b:v {bitrate-69}k  -c:v h264_nvenc -b:a 69k -fs 7.90M  "{filename}.mp4"')
-        filemp4=discord.File(f"SPOILER_{filename}.webm")
-        filemp41=discord.File(f"{filename}.mp4")
+        filwebm=discord.File(f"SPOILER_{filename}.webm")
+        filemp4=discord.File(f"{filename}.mp4")
     else:  
         if os.path.isfile('1.wav'):
             os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt" -i 1.wav  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2  -tune hq -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -rc vbr -fs 7.95M  "{filename}.mp4"')
@@ -194,14 +187,26 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
             os.system(f'ffmpeg -f concat -safe 0 -r {fps*2} -i "frame_list.txt"  -b:v {bitrate-69}k -pix_fmt yuv420p -c:v h264_nvenc -preset hq -strict -2 -vf scale={int(width/8)*8}:{int(height/8)*8},hqdn3d  -tune hq -vf  -rc vbr -fs 7.95M "{filename}.mp4"')
         
         filemp4=discord.File(f"{filename}.mp4")
-    try:
-        await ctx.channel.send(file=filemp41, content="mp4 look bad but not crash discord...✔️")
-        await ctx.channel.send(file=filemp4, content="WEBM better but can crash discord✔️")
-    except:
+    if ossystem=='Linux':
+        if gifuse==True:
+            await ctx.channel.send(file=filegif,content=f"finished gif encoding\n")
+        await ctx.channel.send(file=filemp4, content="finished mp4 encoding\n")
+        if int(frames/fps)>30:
+            await ctx.channel.send(file=filwebm, content="WEBM better but can crash discord✔️")
+    else:
         await ctx.channel.send(file=filemp4, content="finished!✔️")
-    
-    os.remove(f"{filename}.mp4")
-    os.remove(f"{filename}.gif")
+    try:
+        os.remove(f"{filename}.mp4")
+    except:
+        _="c"
+    try:
+        os.remove(f"{filename}.webm")
+    except:
+        _="c"
+    try:
+        os.remove(f"{filename}.gif")
+    except:
+        _="c"
     torch.cuda.empty_cache()
 
 @bot.command()
