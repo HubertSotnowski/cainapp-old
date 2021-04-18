@@ -7,6 +7,7 @@ import os
 import requests
 import cv2
 import shutil
+import subprocess
 #######################
 import torch
 import generate
