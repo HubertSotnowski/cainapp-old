@@ -150,7 +150,7 @@ async def interpolate(ctx, arg1="--model",arg2="converted", arg3="--discord", ar
     if ossystem=='Linux':
         print("skip")
     else:
-        input_and_output.listframe(dir="./frames", text_path="./")
+        input_and_output.list_frame(dir="./frames", text_path="./")
 
 
     await message.edit(content=f"starting encoding🗄️➡️🎞️\n")
