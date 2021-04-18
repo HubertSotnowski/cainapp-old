@@ -256,7 +256,12 @@ async def models(ctx):
         """)
     )
     await ctx.send(embed=embed)
-
+                           
+@bot.command()
+@commands.has_any_role('dev')
+async def update(ctx):
+    await ctx.send("Updating code. The bot will be down for a few seconds, if this doesnt break the code.")
+    subprocess.run(['bash', home_path + '/update.sh'])
 
 tokenfile = open("token.txt", "r")
 TOKEN=tokenfile.read()
