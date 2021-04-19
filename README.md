@@ -132,6 +132,8 @@ Put your token in a file called `token.txt` in the main cain directory
 
 Take your model file from before, copy it to a folder named `models`, and rename it to stable.pth.
 
+In line 144 of 1.py, set `TensorRT=True` if you are using TRT. Otherwse, leave it as `False`
+
 And run ```python3 1.py```
 
 Sadly, Discord limits the file size to 8MB, so bitrate isn't high and video length is limited. Audio bitrate is also only 69kbps
