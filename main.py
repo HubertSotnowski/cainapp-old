@@ -2,10 +2,10 @@ import sys, os
 import shutil
 
 ################
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTextEdit, QFileDialog
+from PyQt5.QtWidgets import *
 from PyQt5 import uic
 import qdarkstyle
-dark_stylesheet = qdarkstyle.load_stylesheet_pyqt5()
+import threading
 
 #################
 import generate
@@ -15,11 +15,15 @@ import save_loda
 import json
 import time
 import glob
+import model_conv
 global OutputPath
 OutputPath=""
 import platform
 os.system("export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64")
-
+output="1.pth"
+tensort=False
+width=320
+height=320
 ossystem=platform.system()
 print(ossystem)
 ##############
@@ -70,20 +74,35 @@ class UI(QMainWindow):
             print(video)
         def extract():
             input_and_output.ExtractFramesOrSplit(Type=self.comboBox_5.currentText(), chunksize="0", dir_path=OutputPath, Line=self.lineEdit.text(), input=video[2])
-        def interpolate():
+        def interpolateft():
             if self.comboBox_2.currentText()=="2x":
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked())
+                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self)
             else:
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked())
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked())
-
+                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self)
+                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self)
+        def interpolate():
+                tinterpolate = threading.Thread(target=interpolateft)
+                tinterpolate.start()
         def all():
             extract()
             interpolate()
             encode()
-
-
+        def select_input_model():
+            global input_model
+            input_model = QFileDialog.getOpenFileName()
+        def select_output_model():
+            global output_model
+            output_model = QFileDialog.getSaveFileName(self, 'Save File',"output.pth")
+        def convert():
+            try:
+                model_conv.convert(Input=input_model[0],output=output_model[0],tensort=self.checkBox_2.isChecked(),width=self.lineEdit_2.text(), height= self.lineEdit_4.text())
+            except:
+                print("crashed")
+            for file in glob.glob("*.pth"):
+                print(file)
+                self.comboBox_4.addItem(f"{file}")
         ###############
+ 
         super(UI, self).__init__()
         uic.loadUi("form.ui", self)
         ##########################
@@ -98,11 +117,18 @@ class UI(QMainWindow):
         self.pushButton_5.clicked.connect(all)
         self.pushButton_6.clicked.connect(saveset)
         self.pushButton_7.clicked.connect(load)
+        self.pushButton_8.clicked.connect(select_input_model)
+        self.pushButton_9.clicked.connect(select_output_model)
+        self.pushButton_10.clicked.connect(convert)
         ##########################
         self.show()
         app.setStyle('fusion')
+        dark_stylesheet = qdarkstyle.load_stylesheet_pyqt5()
+
         app.setStyleSheet(dark_stylesheet)
 
 app = QApplication(sys.argv)
 window = UI()
+
+print("hyba nie jeblo")
 app.exec()
