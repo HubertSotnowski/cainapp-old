@@ -6,11 +6,20 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
+
 global img1
 global img2
 img2="nothing"
 img1="nothing"
 framenum=0
+
+def clean():
+    global img1
+    global img2
+    print(img1)
+    print(img2)
+    img1="nothing"
+    img2="nothing"
 class Video(Dataset):
     def __init__(self, data_root, fmt='png'):
         images = sorted(glob.glob(os.path.join(data_root, '*.%s' % fmt)))
@@ -22,9 +31,10 @@ class Video(Dataset):
         # re
         images = sorted(glob.glob(os.path.join(data_root, '*.%s' % fmt)))
         self.imglist = [[images[i], images[i+1]] for i in range(len(images)-1)]
-        print('[%d] images ready to be loaded' % len(self.imglist))
         img2="nothing"
         img1="nothing"
+        print('[%d] images ready to be loaded' % len(self.imglist))
+
 
 
     def __getitem__(self, index):
@@ -32,9 +42,10 @@ class Video(Dataset):
         global img1
         global img2
         imgpaths = self.imglist[index]
-        if img2=="nothing":
-            img2 = Image.open(imgpaths[0])
-        img1=img2
+        if img1=="nothing":
+            img1 = Image.open(imgpaths[0])
+        else:
+            img1=img2
         img2 = Image.open(imgpaths[1])
         #img2 = Image.open(imgpaths[1])
         #print(img1)

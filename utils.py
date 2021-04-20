@@ -277,6 +277,7 @@ def save_image(img, path):
     else:
         pass
     im.save(path)
+    return im
 
 def save_batch_images(output, imgpath, save_dir, alpha=0.5):
     GEN = save_dir.find('-gen') >= 0 or save_dir.find('stereo') >= 0
