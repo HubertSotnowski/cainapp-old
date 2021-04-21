@@ -56,6 +56,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         #model.eval()
         bar=0
         count=0
+        progres=0
         for file in glob.glob(f"{temp_img}/*.*"):
             count+=1
         count=count/batch_size
@@ -71,10 +72,14 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                 else:
                     out, _ = model(im1, im2)
                 bar+=1
-                if appupdate==True:
-                        
-
-                        app.progressBar_2.setValue((bar/count*100)+1)
+                
+                if int(progres/2)*2 == int(int((bar/count*100)+1)/2)*2:
+                    print("not updating")
+                else:
+                    progres = int((bar/count*100)+1)
+                    print("updated")
+                    if appupdate==True:
+                        app.progressBar_2.setValue(progres)
                 for b in range(images[0].size(0)):
                     paths = meta['imgpath'][0][b].split('/')
                     fp = temp_img
