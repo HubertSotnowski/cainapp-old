@@ -12,11 +12,10 @@ import os
 import numpy as np
 from tqdm import tqdm
 import utils
+import glob
 
 
-
-def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=True):
-    #torch.cuda.set_device(GPUid)
+def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=True,  appupdate=True, app="hmm"):    #torch.cuda.set_device(GPUid)
     ossystem=platform.system()
     print(ossystem)
     torch.cuda.device(GPUid)
@@ -55,11 +54,14 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         test_loader = utils.load_dataset(
             temp_img, batch_size, batch_size, 0, img_fmt=img_fmt)
         #model.eval()
-
+        bar=0
+        count=0
+        for file in glob.glob(f"{temp_img}/*.*"):
+            count+=1
+        count=count/batch_size
         t = time.time()
         with torch.no_grad():
             for i, (images, meta) in enumerate(tqdm(test_loader)):
-
                 # Build input batch
                 im1, im2 = images[0].to(device).half(), images[1].to(device).half()
 
@@ -68,6 +70,11 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                     out, _ = model_trt(im1, im2)
                 else:
                     out, _ = model(im1, im2)
+                bar+=1
+                if appupdate==True:
+                        
+
+                        app.progressBar_2.setValue((bar/count*100)+1)
                 for b in range(images[0].size(0)):
                     paths = meta['imgpath'][0][b].split('/')
                     fp = temp_img
@@ -91,6 +98,8 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                     savepath = "%s_%06f.%s" % (fp[:fpos], fInd, img_fmt)
                     tsave = threading.Thread(target=save)
                     tsave.start()
+
+
          
     
     test()

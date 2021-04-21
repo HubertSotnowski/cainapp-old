@@ -1,5 +1,5 @@
 import torch
-from cain import CAIN
+from model.cain import CAIN
 def convert(Input="input.pth",output="1.pth",tensort=False, height=256, width=256):
     model = CAIN(depth=3)
     model = torch.nn.DataParallel(model).to("cuda")
