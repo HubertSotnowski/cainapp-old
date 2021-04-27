@@ -8,7 +8,8 @@ import json
 import glob
 import logging
 import shutil
-
+from numba import jit
+import numpy as np
 import numpy as np
 import torch
 from torchvision import transforms
@@ -28,16 +29,19 @@ import cv2
 # from pytorch_msssim import ssim_matlab as ssim_pth
 # from pytorch_msssim import ssim as ssim_pth
 
-##########################
+##########################ci
 # Training Helper Functions for making main.py clean
 ##########################
 
-def load_dataset(data_root, batch_size, test_batch_size, num_workers, test_mode='medium', img_fmt='png'):
-    from video import get_loader
+def load_dataset(data_root, batch_size, test_batch_size, num_workers, test_mode='medium', img_fmt='png',dataloader="new"):
+    if dataloader=="new":
+        from newloader import get_loader
+    if dataloader=="old":
+        from oldloader import get_loader
+
     test_loader = get_loader('test', data_root, test_batch_size, img_fmt=img_fmt, shuffle=False, num_workers=num_workers, n_frames=1)
     #train_loader = get_loader('train', data_root, batch_size, shuffle=True, num_workers=num_workers)
     return  test_loader
-
 
 def build_input(images, imgpaths, is_training=True, include_edge=False, device=torch.device('cuda')):
     if isinstance(images[0], list):

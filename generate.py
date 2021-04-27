@@ -7,16 +7,19 @@ import random
 import threading
 import torch
 import platform
-import video
 import os
 import numpy as np
 from tqdm import tqdm
 import utils
 import glob
+import cv2
 
-
-def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=True,  appupdate=True, app="hmm"):    #torch.cuda.set_device(GPUid)
+from utils import quantize
+from PIL import Image
+def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=True,  appupdate=False, app="hmm", dataloader="new"):    #torch.cuda.set_device(GPUid)
     ossystem=platform.system()
+    if appupdate==True:
+        import PyQt5.QtGui 
     print(ossystem)
     torch.cuda.device(GPUid)
     device = torch.device(torch_device)
@@ -40,11 +43,11 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
     else:
         def save():
             utils.save_image(out[b], temp_img[:-6]+savepath)
-
     def test():
         global savepath
         global images
         global fInd
+
         global fpos
         global meta
         global out
@@ -52,7 +55,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         global tsave
         ##### Load Dataset #####
         test_loader = utils.load_dataset(
-            temp_img, batch_size, batch_size, 0, img_fmt=img_fmt)
+            temp_img, batch_size, batch_size, 0, img_fmt=img_fmt, dataloader=dataloader)
         #model.eval()
         bar=0
         count=0
@@ -73,13 +76,17 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                     out, _ = model(im1, im2)
                 bar+=1
                 
-                if int(progres/2)*2 == int(int((bar/count*100)+1)/2)*2:
+                if int(progres) == int(int((bar/count*100)+1)):
                     print("not updating")
                 else:
-                    progres = int((bar/count*100)+1)
+                    progres = round((bar/count*100)+1)
                     print("updated")
                     if appupdate==True:
                         app.progressBar_2.setValue(progres)
+                        q_im = quantize(out[0].data.mul(255))
+                        im = np.array(q_im.permute(1, 2, 0).cpu().numpy().astype(np.uint8))
+                        q_im = cv2.resize(cv2.cvtColor((cv2.cvtColor(np.array(im), cv2.COLOR_BGR2RGB)), cv2.COLOR_BGR2RGB), (448,256), interpolation = cv2.INTER_NEAREST)
+                        app.label_5.setPixmap( PyQt5.QtGui.QPixmap(PyQt5.QtGui.QImage(q_im.data, 448, 256, 1344,  PyQt5.QtGui.QImage.Format_RGB888))  )
                 for b in range(images[0].size(0)):
                     paths = meta['imgpath'][0][b].split('/')
                     fp = temp_img
@@ -108,7 +115,8 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
          
     
     test()
-    video.clean()
+    if dataloader=="new":
+        video.clean()
     try:
         del model
     except:

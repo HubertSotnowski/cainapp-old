@@ -23,3 +23,5 @@ libnvrtc-builtins.so.11.1
 *.desktop
 vidpla.py
 play.ui
+*.part
+*.ytdl

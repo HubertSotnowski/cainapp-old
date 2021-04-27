@@ -22,10 +22,7 @@ Cainapp is a gui for cain with some new things like fp16, saving frames on other
 
 Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-based version, so the only requirements are
 
-1. A NVidia GPU
-2. Driver version >396.26
-
-So in theory, it could even run on a GTX 650
+1. A NVidia GPU supported by pytorch (i think it's kepler and newer)
 
 
 
@@ -34,7 +31,7 @@ So in theory, it could even run on a GTX 650
 
 1. Download python 3.9 📥 (https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe)
 
-   python 3.9 only supports Windows 8+, if you want run cain app on windows 7 use python 3.8
+   python 3.9 only supports Windows 8+, if you want run cain app on windows 7 or on kepler use python 3.7 (https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe)
 
    
 
@@ -47,6 +44,12 @@ So in theory, it could even run on a GTX 650
    `pip3 install qdarkstyle`
 
    `pip3 install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio===0.8.1 -f https://download.pytorch.org/whl/torch_stable.html` this can need much time ⌚
+
+   if you have kepler gpu you must run this and select in ai tab "old pytorch mode":
+
+   ```pip install torch==1.2.0+cu92 torchvision==0.4.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html``` 
+
+   
 
    `pip3 install tqdm`
 

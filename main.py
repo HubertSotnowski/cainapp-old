@@ -75,17 +75,21 @@ class UI(QMainWindow):
         def extract():
             input_and_output.ExtractFramesOrSplit(Type=self.comboBox_5.currentText(), chunksize="0", dir_path=OutputPath, Line=self.lineEdit.text(), input=video[2])
         def interpolateft():
+            dataloader="new"
+            if self.checkBox_5.isChecked():
+                dataloader="old"
+
             if self.comboBox_2.currentText()=="2x":
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self)
+                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader)
             else:
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self)
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self)
+                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader)
+                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader)
         def interpolate():
                 tinterpolate = threading.Thread(target=interpolateft)
                 tinterpolate.start()
         def all():
             extract()
-            interpolate()
+            interpolateft()
             encode()
         def select_input_model():
             global input_model
@@ -101,8 +105,11 @@ class UI(QMainWindow):
             for file in glob.glob("*.pth"):
                 print(file)
                 self.comboBox_4.addItem(f"{file}")
+        def startdoall():
+            tall = threading.Thread(target=all)
+            tall.start()
         ###############
- 
+
         super(UI, self).__init__()
         uic.loadUi("form.ui", self)
         ##########################
@@ -120,6 +127,7 @@ class UI(QMainWindow):
         self.pushButton_8.clicked.connect(select_input_model)
         self.pushButton_9.clicked.connect(select_output_model)
         self.pushButton_10.clicked.connect(convert)
+        self.pushButton_11.clicked.connect(startdoall)
         ##########################
         self.show()
         app.setStyle('fusion')
