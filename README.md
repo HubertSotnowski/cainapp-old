@@ -43,7 +43,7 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
    `pip3 install qdarkstyle`
 
-   `pip3 install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio===0.8.1 -f https://download.pytorch.org/whl/torch_stable.html` this can need much time ⌚
+   `pip3 install --pre torch torchvision torchaudio -f https://download.pytorch.org/whl/nightly/cu111/torch_nightly.html` this can need much time ⌚
 
    if you have kepler gpu you must run this and select in ai tab "old pytorch mode":
 
