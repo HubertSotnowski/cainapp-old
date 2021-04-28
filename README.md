@@ -22,16 +22,16 @@ Cainapp is a gui for cain with some new things like fp16, saving frames on other
 
 Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-based version, so the only requirements are
 
-1. A NVidia GPU supported by pytorch (i think it's kepler and newer)
+1. A NVidia GPU that has recently been updated
 
 
 
 ## How to install on windows💾
 
 
-1. Download python 3.9 📥 (https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe)
+1. Download Python 3.9 📥 (https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe)
 
-   python 3.9 only supports Windows 8+, if you want run cain app on windows 7 or on kepler use python 3.7 (https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe)
+   Python 3.9 only supports Windows 8+, if you want to run cain app on Windows 7 (or if you have a Kepler GPU), use Python 3.7 (https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe)
 
    
 
@@ -45,9 +45,11 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
    `pip3 install --pre torch torchvision torchaudio -f https://download.pytorch.org/whl/nightly/cu111/torch_nightly.html` this can need much time ⌚
 
-   if you have kepler gpu you must run this and select in ai tab "old pytorch mode":
+   If you have a Kepler GPU you must run
 
    ```pip install torch==1.2.0+cu92 torchvision==0.4.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html``` 
+   
+   And select "old pytorch mode" in the "ai" tab
 
    
 
@@ -59,9 +61,9 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
 4. Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
 
-   Extract 📦 ffmpeg.exe in cainapp folder📁
+   Extract it and put 📦 ffmpeg.exe in the cainapp folder📁
 
-5. Download the model and put it into the cain folder📁d
+5. Download the model and put it into the cainapp folder📁d
 
 6. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
 
@@ -90,7 +92,7 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
    `sudo apt install ffmpeg`
 
-5. Download the model and put it into the cain folder📁
+5. Download the model and put it into the cainapp folder📁
 
 6. In terminal, run ` cd cainapp/ ` then ```python3 main.py```
 
@@ -125,7 +127,7 @@ Converting model to tensorRT:
 
 ## How to run the discord bot🤖
 
-Basically the same as in How to install but you need to install 2 more things and do some arranging
+Basically the same as in "how to install" but you need to install 2 more things and do some arranging
 
 `pip3 install discord.py` 
 
