@@ -25,3 +25,6 @@ vidpla.py
 play.ui
 *.part
 *.ytdl
+ffmpeg.exe
+ffplay.exe
+ffprobe.exe
