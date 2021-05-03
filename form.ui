@@ -219,7 +219,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -907,7 +907,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>do all</string>
+    <string>run all steps</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_6">
