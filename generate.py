@@ -36,7 +36,11 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         model = CAIN(depth=3)
         checkpoint = torch.load(modelp)
         model.load_state_dict(checkpoint)
-        model.cuda().half() 
+        if fp16==True:
+            model.cuda().half() 
+        else:
+            model.cuda()
+        
     if ossystem=='Linux':
         def save():
             utils.save_image(out[b], temp_img+"/"+savepath)
@@ -67,7 +71,11 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         with torch.no_grad():
             for i, (images, meta) in enumerate(tqdm(test_loader)):
                 # Build input batch
-                im1, im2 = images[0].to(device).half(), images[1].to(device).half()
+                if fp16==True:
+                    im1, im2 = images[0].to(device).half(), images[1].to(device).half()
+                else:
+                    im1, im2 = images[0].to(device), images[1].to(device)
+                
 
                 # Forward
                 if TensorRT==True:

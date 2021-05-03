@@ -8,7 +8,6 @@ def convert(Input="input.pth",output="1.pth",tensort=False, height=256, width=25
     model.load_state_dict(checkpoint['state_dict'])
     model.cuda()
     model.eval()
-    model.half()
     try:
         state_dict = model.module.state_dict()
     except AttributeError:

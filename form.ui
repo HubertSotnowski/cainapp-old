@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>740</width>
-    <height>562</height>
+    <width>752</width>
+    <height>567</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600;&quot;&gt;CAIN APP 2.2.7 E&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600;&quot;&gt;CAIN APP 2.2.8 E&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
@@ -192,22 +192,6 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;AI settings&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QCheckBox" name="checkBox_4">
-   <property name="geometry">
-    <rect>
-     <x>1370</x>
-     <y>60</y>
-     <width>102</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>half precision</string>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_7">
    <property name="geometry">
@@ -700,13 +684,29 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>170</y>
+       <y>190</y>
        <width>161</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
       <string>old pytorch mode</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>170</y>
+       <width>102</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>half precision</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>
