@@ -6,6 +6,7 @@ import os.path
 import cv2
 import torch
 import platform
+import time
 ossystem=platform.system()
 print(ossystem)
 
@@ -52,7 +53,7 @@ def  ExtractFramesOrSplit(Type="jpg", chunksize="00:01:00", dir_path="./",Line="
     else:
         os.mkdir(f'{dir_path}/cain')
         os.mkdir(f'{dir_path}/cain/frames')
-
+    time.sleep(1)
     os.system(f'ffmpeg -i "{input}" -hide_banner {Line} -q 2 -pix_fmt rgb24 "{dir_path}/cain/frames/%6d.{Type}"')
     os.system(f'ffmpeg -i "{input}" -hide_banner "{dir_path}/cain/1.wav"')
 

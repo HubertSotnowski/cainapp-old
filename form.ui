@@ -10,6 +10,12 @@
     <height>567</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>752</width>
+    <height>567</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>cainapp2</string>
   </property>
@@ -29,7 +35,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600;&quot;&gt;CAIN APP 2.2.8 E&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:600;&quot;&gt;CAIN APP 2.3 S&lt;/span&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
@@ -219,7 +225,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -843,14 +849,9 @@
       </rect>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string>preview preview preview preview preview preview preview preview preview preview preview </string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="tab_6">
-    <attribute name="title">
-     <string>experimental</string>
-    </attribute>
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
