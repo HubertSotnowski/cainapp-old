@@ -16,7 +16,7 @@ import cv2
 import newloader
 from utils import quantize
 from PIL import Image
-def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=True,  appupdate=False, app="hmm", dataloader="new"):    #torch.cuda.set_device(GPUid)
+def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=True,  appupdate=False, app="hmm", dataloader="new",partialconv2d=True, funnynumber=1):    #torch.cuda.set_device(GPUid)
     ossystem=platform.system()
     if appupdate==True:
         import PyQt5.QtGui 
@@ -32,7 +32,10 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         model_trt = TRTModule()
         model_trt.load_state_dict(torch.load(modelp))
     else:
-        from model.cain import CAIN
+        if partialconv2d == True:
+            from model.cainpartial import CAIN
+        else:
+            from model.cain import CAIN
         model = CAIN(depth=3)
         checkpoint = torch.load(modelp)
         model.load_state_dict(checkpoint)
@@ -90,11 +93,13 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                     progres = round((bar/count*100)+1)
                     print("updated")
                     if appupdate==True:
-                        app.progressBar_2.setValue(progres)
-                        q_im = quantize(out[0].data.mul(255))
-                        im = np.array(q_im.permute(1, 2, 0).cpu().numpy().astype(np.uint8))
-                        q_im = cv2.resize(cv2.cvtColor((cv2.cvtColor(np.array(im), cv2.COLOR_BGR2RGB)), cv2.COLOR_BGR2RGB), (448,256), interpolation = cv2.INTER_NEAREST)
-                        app.label_5.setPixmap( PyQt5.QtGui.QPixmap(PyQt5.QtGui.QImage(q_im.data, 448, 256, 1344,  PyQt5.QtGui.QImage.Format_RGB888))  )
+                        if count>200:
+                        
+                            app.progressBar_2.setValue(progres)
+                            q_im = quantize(out[0].data.mul(255))
+                            im = np.array(q_im.permute(1, 2, 0).cpu().numpy().astype(np.uint8))
+                            q_im = cv2.resize(cv2.cvtColor((cv2.cvtColor(np.array(im), cv2.COLOR_BGR2RGB)), cv2.COLOR_BGR2RGB), (448,256), interpolation = cv2.INTER_NEAREST)
+                            app.label_5.setPixmap( PyQt5.QtGui.QPixmap(PyQt5.QtGui.QImage(q_im.data, 448, 256, 1344,  PyQt5.QtGui.QImage.Format_RGB888))  )
                 for b in range(images[0].size(0)):
                     paths = meta['imgpath'][0][b].split('/')
                     fp = temp_img

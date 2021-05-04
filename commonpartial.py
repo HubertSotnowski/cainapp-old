@@ -30,7 +30,7 @@ class ConvNorm(nn.Module):
 
         reflection_padding = kernel_size // 2
         self.reflection_pad = nn.ReflectionPad2d(reflection_padding)
-        self.conv = nn.Conv2d(in_feat, out_feat, stride=stride, kernel_size=kernel_size, bias=True)
+        self.conv = nnn.PartialConv2d(in_feat, out_feat, stride=stride, kernel_size=kernel_size, bias=True)
 
         self.norm = norm
         if norm == 'IN':
@@ -74,7 +74,7 @@ class meanShift(nn.Module):
         if nChannel == 1:
             l = rgbMean[0] * rgbRange * float(sign)
 
-            self.shifter =  nn.Conv2d(1, 1, kernel_size=1, stride=1, padding=0)
+            self.shifter = nnn.PartialConv2d(1, 1, kernel_size=1, stride=1, padding=0)
             self.shifter.weight.data = torch.eye(1).view(1, 1, 1, 1)
             self.shifter.bias.data = torch.Tensor([l])
         elif nChannel == 3:  
@@ -82,14 +82,14 @@ class meanShift(nn.Module):
             g = rgbMean[1] * rgbRange * float(sign)
             b = rgbMean[2] * rgbRange * float(sign)
 
-            self.shifter =  nn.Conv2d(3, 3, kernel_size=1, stride=1, padding=0)
+            self.shifter = nnn.PartialConv2d(3, 3, kernel_size=1, stride=1, padding=0)
             self.shifter.weight.data = torch.eye(3).view(3, 3, 1, 1)
             self.shifter.bias.data = torch.Tensor([r, g, b])
         else:
             r = rgbMean[0] * rgbRange * float(sign)
             g = rgbMean[1] * rgbRange * float(sign)
             b = rgbMean[2] * rgbRange * float(sign)
-            self.shifter =  nn.Conv2d(6, 6, kernel_size=1, stride=1, padding=0)
+            self.shifter = nnn.PartialConv2d(6, 6, kernel_size=1, stride=1, padding=0)
             self.shifter.weight.data = torch.eye(6).view(6, 6, 1, 1)
             self.shifter.bias.data = torch.Tensor([r, g, b, r, g, b])
 
@@ -117,7 +117,7 @@ class ResBlock(nn.Module):
         
         self.downscale = None
         if downscale:
-            self.downscale =  nn.Conv2d(in_feat, out_feat, kernel_size=1, stride=2)
+            self.downscale = nnn.PartialConv2d(in_feat, out_feat, kernel_size=1, stride=2)
 
     def forward(self, x):
         res = x
@@ -137,9 +137,9 @@ class CALayer(nn.Module):
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         # feature channel downscale and upscale --> channel weight
         self.conv_du = nn.Sequential(
-            nn.Conv2d(channel, channel // reduction, 1, padding=0, bias=True),
+            nnn.PartialConv2d(channel, channel // reduction, 1, padding=0, bias=True),
             nn.ReLU(inplace=True),
-            nn.Conv2d(channel // reduction, channel, 1, padding=0, bias=True),
+            nnn.PartialConv2d(channel // reduction, channel, 1, padding=0, bias=True),
             nn.Sigmoid()
         )
 
@@ -163,7 +163,7 @@ class RCAB(nn.Module):
         )
         self.downscale = downscale
         if downscale:
-            self.downConv =  nn.Conv2d(in_feat, out_feat, kernel_size=3, stride=2, padding=1)
+            self.downConv = nnn.PartialConv2d(in_feat, out_feat, kernel_size=3, stride=2, padding=1)
         self.return_ca = return_ca
 
     def forward(self, x):
@@ -230,7 +230,7 @@ class PixelShuffle(nn.Module):
 
 def conv(in_channels, out_channels, kernel_size, 
          stride=1, bias=True, groups=1):
-    return  nn.Conv2d(
+    return nnn.PartialConv2d(
         in_channels,
         out_channels,
         kernel_size=kernel_size,
@@ -241,7 +241,7 @@ def conv(in_channels, out_channels, kernel_size,
 
 
 def conv1x1(in_channels, out_channels, stride=1, bias=True, groups=1):
-    return  nn.Conv2d(
+    return nnn.PartialConv2d(
         in_channels,
         out_channels,
         kernel_size=1,
@@ -251,7 +251,7 @@ def conv1x1(in_channels, out_channels, stride=1, bias=True, groups=1):
 
 def conv3x3(in_channels, out_channels, stride=1, 
             padding=1, bias=True, groups=1):    
-    return  nn.Conv2d(
+    return nnn.PartialConv2d(
         in_channels,
         out_channels,
         kernel_size=3,
@@ -262,7 +262,7 @@ def conv3x3(in_channels, out_channels, stride=1,
 
 def conv5x5(in_channels, out_channels, stride=1, 
             padding=2, bias=True, groups=1):    
-    return  nn.Conv2d(
+    return nnn.PartialConv2d(
         in_channels,
         out_channels,
         kernel_size=5,
@@ -273,7 +273,7 @@ def conv5x5(in_channels, out_channels, stride=1,
 
 def conv7x7(in_channels, out_channels, stride=1, 
             padding=3, bias=True, groups=1):    
-    return  nn.Conv2d(
+    return nnn.PartialConv2d(
         in_channels,
         out_channels,
         kernel_size=7,
@@ -321,7 +321,7 @@ class Interpolation(nn.Module):
                 reduction=reduction, 
                 act=act, 
                 norm=norm)
-            for _ in range(n_resgroups)]
+            for _ in range(6)]
         self.body = nn.Sequential(*modules_body)
 
         self.tailConv = conv3x3(n_feats, n_feats)
