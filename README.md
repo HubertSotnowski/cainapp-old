@@ -31,10 +31,6 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
 1. Download Python 3.9 📥 (https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe)
 
-   Python 3.9 only supports Windows 8+, if you want to run cain app on Windows 7 (or if you have a Kepler GPU), use Python 3.7 (https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe)
-
-   
-
 2. Install python 3.9, and remember to select "Add to PATH"
 
 3. In cmd run 
@@ -45,29 +41,44 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
    `pip3 install --pre torch torchvision torchaudio -f https://download.pytorch.org/whl/nightly/cu111/torch_nightly.html` this can need much time ⌚
 
-   If you have a Kepler GPU you must run
-
-   ```pip install torch==1.2.0+cu92 torchvision==0.4.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html``` 
-   
-   And select "old pytorch mode" in the "ai" tab
-
-   
-
    `pip3 install tqdm`
 
    `pip3 install opencv-python`
-
+   
    
 
 4. Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
 
    Extract it and put 📦 ffmpeg.exe in the cainapp folder📁
 
-5. Download the model and put it into the cainapp folder📁d
+5. Download the model and put it into the cainapp folder📁
 
 6. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
 
    
+
+## How to install on windows(kepler)
+
+1. Download Python 3.7 📥 (https://www.python.org/ftp/python/3.7.9/python-3.7.9-amd64.exe)
+
+   `pip3 install pyqt5`
+
+   `pip3 install qdarkstyle`
+
+   ```pip install torch==1.2.0+cu92 torchvision==0.4.0+cu92 -f https://download.pytorch.org/whl/torch_stable.html``` 
+
+   `pip3 install tqdm`
+
+   `pip3 install opencv-python`
+
+2. Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
+
+Extract it and put 📦 ffmpeg.exe in the cainapp folder📁
+
+3. Download the model and put it into the cainapp folder📁
+
+4. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
+5. Select old pytorch model in ai tab
 
 ## How to install on ubuntu💾
 
@@ -168,3 +179,4 @@ Hubert's dogecoin and dgb wallets are also listed in the code.
     year = {2020}
 }
 ```
+
