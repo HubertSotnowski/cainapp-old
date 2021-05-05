@@ -112,7 +112,7 @@ Just as a precaution, this code is completely untested on Debian. If you have an
 ## How to install for 2 GPUs (i.e. Ampere & Kepler) ##
 
 
-1. Install (Conda)[https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html#]
+1. Install [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html#)
 
 2. Install the Python version for the non-Kepler GPU first. This will most likely be 3.9. `conda create -n (name) python=3.9`
 
@@ -120,7 +120,7 @@ Just as a precaution, this code is completely untested on Debian. If you have an
 
 When you wish to switch between the versions you can type in `conda deactivate` and it will disable any current Python versions active in a command prompt. Using `conda activate (name)` will enable the Python version specified by its nickname.
 
-This process is also used if you have applications that run on different python versions. An example would be cainapp, which requires Python 3.9, and (UVR)[https://github.com/Anjok07/ultimatevocalremovergui], which requires Python 3.7.
+This process is also used if you have applications that run on different python versions. An example would be cainapp, which requires Python 3.9, and [UVR](https://github.com/Anjok07/ultimatevocalremovergui), which requires Python 3.7.
 
 
 **Optional:**
@@ -180,7 +180,7 @@ https://drive.google.com/drive/folders/1Pljrfv9xjXPU2fiwvSx-D3nvh7XvOx0I
 If you wish to support the project, you can donate to Hubert's patreon [here](https://www.patreon.com/hubert_)!
 Hubert's dogecoin and dgb wallets are also listed in the code.
 
-Congratulations! You've read this until the end! We hope that you will have a good experience using cainapp. If you have any questions, and/or want to use the bot without hosting it yourself, join the (discord server)[https://discord.gg/m42dCgVkm8]!
+Congratulations! You've read this until the end! We hope that you will have a good experience using cainapp. If you have any questions, and/or want to use the bot without hosting it yourself, join the [discord server](https://discord.gg/m42dCgVkm8)!
 
 
 ## CAIN Citation
