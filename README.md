@@ -24,14 +24,14 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
 1. A NVidia GPU that has recently been updated
 
+However, we cannot guarantee that you will have the best experience with lower specced hardware, so we at least suggest getting a GPU with over 2GB of VRAM for at least a devent experience.
 
-
-## How to install on windows💾
+## How to install on Windows💾
 
 
 1. Download Python 3.9 📥 (https://www.python.org/ftp/python/3.9.2/python-3.9.2-amd64.exe)
 
-2. Install python 3.9, and remember to select "Add to PATH"
+2. Install Python 3.9, and remember to select "Add to PATH"
 
 3. In cmd run 
 
@@ -47,9 +47,9 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
    
    
 
-4. Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
+4. Download Ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
 
-   Extract it and put 📦 ffmpeg.exe in the cainapp folder📁
+   Extract it and put 📦 ffmpeg.exe (located in the `bin` folder) in the cainapp folder📁
 
 5. Download the model and put it into the cainapp folder📁
 
@@ -71,7 +71,7 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
    `pip3 install opencv-python`
 
-2. Download ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
+2. Download Ffmpeg 📥 (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
 
 Extract it and put 📦 ffmpeg.exe in the cainapp folder📁
 
@@ -80,7 +80,7 @@ Extract it and put 📦 ffmpeg.exe in the cainapp folder📁
 4. In cmd, run ` cd path/to/cainapp/ ` then ```python3 main.py```
 5. Select old pytorch model in ai tab
 
-## How to install on ubuntu💾
+## How to install on Debian/Ubuntu-based distributions💾
 
 
 1. Install git ```sudo apt install git```
@@ -107,7 +107,20 @@ Extract it and put 📦 ffmpeg.exe in the cainapp folder📁
 
 6. In terminal, run ` cd cainapp/ ` then ```python3 main.py```
 
+Just as a precaution, this code is completely untested on Debian. If you have any feedback, let us know!
 
+## How to install for 2 GPUs (i.e. Ampere & Kepler) ##
+
+
+1. Install (Conda)[https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html#]
+
+2. Install the Python version for the non-Kepler GPU first. This will most likely be 3.9. `conda create -n (name) python=3.9`
+
+3. Install the Python version for the other GPU. For Kepler, this will be 3.7. `conda create -n (name) python=3.7`
+
+When you wish to switch between the versions you can type in `conda deactivate` and it will disable any current Python versions active in a command prompt. Using `conda activate (name)` will enable the Python version specified by its nickname.
+
+This process is also used if you have applications that run on different python versions. An example would be cainapp, which requires Python 3.9, and (UVR)[https://github.com/Anjok07/ultimatevocalremovergui], which requires Python 3.7.
 
 
 **Optional:**
@@ -122,21 +135,21 @@ Extract it and put 📦 ffmpeg.exe in the cainapp folder📁
    python3 setup.py install
    ```
 
-Converting model to tensorRT:
+Converting a model to tensorRT:
 
-1. download model converter ```git clone https://github.com/Hubert482/cain-tools.git ```
+1. Download the model converter ```git clone https://github.com/Hubert482/cain-tools.git ```
 
    ```cd cain-tools```
 
-2. convert your model! ```python3 conv_model.py --width {width of model} --height {height of model} --input "{input model path}" ``` 
+2. Convert your model! ```python3 conv_model.py --width {width of model} --height {height of model} --input "{input model path}" ``` 
 
-3. copy ```converted.pth``` to cainapp folder and run!
+3. Copy ```converted.pth``` to the cainapp folder and run!
 
-   if you have some problems with it dm me on discord `hubert#0069`
+   If you have some problems with it dm me on discord `hubert#0069`
 
 
 
-## How to run the discord bot🤖
+## How to run the Discord bot🤖
 
 Basically the same as in "how to install" but you need to install 2 more things and do some arranging
 
@@ -167,6 +180,7 @@ https://drive.google.com/drive/folders/1Pljrfv9xjXPU2fiwvSx-D3nvh7XvOx0I
 If you wish to support the project, you can donate to Hubert's patreon [here](https://www.patreon.com/hubert_)!
 Hubert's dogecoin and dgb wallets are also listed in the code.
 
+Congratulations! You've read this until the end! We hope that you will have a good experience using cainapp. If you have any questions, and/or want to use the bot without hosting it yourself, join the (discord server)[https://discord.gg/m42dCgVkm8]!
 
 
 ## CAIN Citation
