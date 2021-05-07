@@ -24,7 +24,7 @@ Unlike previously, Cainapp now runs on CUDA. Fortunately, it runs on the driver-
 
 1. A NVidia GPU that has recently been updated
 
-However, we cannot guarantee that you will have the best experience with lower specced hardware, so we at least suggest getting a GPU with over 2GB of VRAM for at least a devent experience.
+However, we cannot guarantee that you will have the best experience with lower specced hardware, so we at least suggest getting a GPU with over 2GB of VRAM for at least a decent experience.
 
 ## How to install on Windows💾
 
@@ -169,7 +169,22 @@ Sadly, Discord limits the file size to 8MB, so bitrate isn't high and video leng
 
 ## How to train 🚆
 
-[![Open In Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/github/Hubert482/CAIN/blob/master/Training.ipynb) Simple train colab try it! Its simple! 
+[![Open In Colab](https://camo.githubusercontent.com/84f0493939e0c4de4e6dbe113251b4bfb5353e57134ffd9fcab6b8714514d4d1/68747470733a2f2f636f6c61622e72657365617263682e676f6f676c652e636f6d2f6173736574732f636f6c61622d62616467652e737667)](https://colab.research.google.com/github/Hubert482/CAIN/blob/master/Training.ipynb) It's simple to train with colab. However, it tends to not like being connected to the google-provided GPU, so the code listed below is stolen from Hv#3868.
+
+To keep colab connected,
+
+`function ConnectButton(){
+    console.log("Connect pushed"); 
+    document.querySelector("#top-toolbar > colab-connect-button").shadowRoot.querySelector("#connect").click() 
+}
+setInterval(ConnectButton,60000);`
+ ^
+ |
+ enter this on console (not cell)
+and keep colab on foreground.
+
+It's not really good to train in colab, due to its limitation.
+It takes exponentially longer the more videos you have in your training input folder. However, you could subscribe to https://cloud.google.com/gcp, and watch some youtube tutorials how to utilise its resources to colab.
 
 ## Models
 
