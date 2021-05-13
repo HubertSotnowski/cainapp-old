@@ -130,13 +130,12 @@ class UI(QMainWindow):
         self.pushButton_11.clicked.connect(startdoall)
         ##########################
         self.show()
-        app.setStyle('fusion')
-        dark_stylesheet = qdarkstyle.load_stylesheet_pyqt5()
 
-        app.setStyleSheet(dark_stylesheet)
+
+
 
 app = QApplication(sys.argv)
 window = UI()
 
-print("hyba nie jeblo")
+
 app.exec()
