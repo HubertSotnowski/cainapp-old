@@ -118,6 +118,8 @@ Just as a precaution, this code is completely untested on Debian. If you have an
 
 3. Install the Python version for the other GPU. For Kepler, this will be 3.7. `conda create -n (name) python=3.7`
 
+4. Continue following the set of instructions for your system, starting from after "install python"
+
 When you wish to switch between the versions you can type in `conda deactivate` and it will disable any current Python versions active in a command prompt. Using `conda activate (name)` will enable the Python version specified by its nickname.
 
 This process is also used if you have applications that run on different python versions. An example would be cainapp, which requires Python 3.9, and [UVR](https://github.com/Anjok07/ultimatevocalremovergui), which requires Python 3.7.
