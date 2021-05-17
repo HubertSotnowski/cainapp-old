@@ -50,11 +50,25 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
     else:
         def save():
             utils.save_image(out[b], temp_img[:-6]+savepath)
+    def update(progres="0"):         
+        if int(progres) == int(int((bar/count*100)+1)):
+            print("")
+        else:
+            progres = round((bar/count*100)+1)
+        if appupdate==True:
+            if count>200:
+                app.progressBar_2.setValue(progres)
+                q_im = quantize(out[0].data.mul(255))
+                im = np.array(q_im.permute(1, 2, 0).cpu().numpy().astype(np.uint8))
+                q_im = cv2.resize(cv2.cvtColor((cv2.cvtColor(np.array(im), cv2.COLOR_BGR2RGB)), cv2.COLOR_BGR2RGB), (448,256), interpolation = cv2.INTER_NEAREST)
+                app.label_5.setPixmap( PyQt5.QtGui.QPixmap(PyQt5.QtGui.QImage(q_im.data, 448, 256, 1344,  PyQt5.QtGui.QImage.Format_RGB888)))
     def test():
         global savepath
         global images
         global fInd
-
+        global progres
+        global bar
+        global count
         global fpos
         global meta
         global out
@@ -86,20 +100,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                 else:
                     out, _ = model(im1, im2,im3)
                 bar+=1
-                
-                if int(progres) == int(int((bar/count*100)+1)):
-                    print("not updating")
-                else:
-                    progres = round((bar/count*100)+1)
-                    print("updated")
-                    if appupdate==True:
-                        if count>200:
-                        
-                            app.progressBar_2.setValue(progres)
-                            q_im = quantize(out[0].data.mul(255))
-                            im = np.array(q_im.permute(1, 2, 0).cpu().numpy().astype(np.uint8))
-                            q_im = cv2.resize(cv2.cvtColor((cv2.cvtColor(np.array(im), cv2.COLOR_BGR2RGB)), cv2.COLOR_BGR2RGB), (448,256), interpolation = cv2.INTER_NEAREST)
-                            app.label_5.setPixmap( PyQt5.QtGui.QPixmap(PyQt5.QtGui.QImage(q_im.data, 448, 256, 1344,  PyQt5.QtGui.QImage.Format_RGB888))  )
+                update(progres=progres)
                 for b in range(images[0].size(0)):
                     paths = meta['imgpath'][0][b].split('/')
                     fp = temp_img
