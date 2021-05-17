@@ -75,16 +75,16 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
             for i, (images, meta) in enumerate(tqdm(test_loader)):
                 # Build input batch
                 if fp16==True:
-                    im1, im2 = images[0].to(device).half(), images[1].to(device).half()
+                    im1, im2,im3 = images[0].to(device).half(), images[1].to(device).half(), images[2].to(device).half()
                 else:
-                    im1, im2 = images[0].to(device), images[1].to(device)
+                    im1, im2,im3 = images[0].to(device), images[1].to(device), images[2].to(device).half()
                 
 
                 # Forward
                 if TensorRT==True:
-                    out, _ = model_trt(im1, im2)
+                    out, _ = model_trt(im1, im2,im3)
                 else:
-                    out, _ = model(im1, im2)
+                    out, _ = model(im1, im2,im3)
                 bar+=1
                 
                 if int(progres) == int(int((bar/count*100)+1)):

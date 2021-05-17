@@ -30,7 +30,7 @@ class Video(Dataset):
                 os.rename(im, '%s_%.06f.%s' % (im[:-4], 0.0, fmt))
         # re
         images = sorted(glob.glob(os.path.join(data_root, '*.%s' % fmt)))
-        self.imglist = [[images[i], images[i+1]] for i in range(len(images)-1)]
+        self.imglist = [[images[i], images[i+1], images[i+2]] for i in range(len(images)-2)]
         img2="nothing"
         img1="nothing"
         print('[%d] images ready to be loaded' % len(self.imglist))
@@ -42,26 +42,13 @@ class Video(Dataset):
         global img1
         global img2
         imgpaths = self.imglist[index]
-        if img1=="nothing":
-            img1 = Image.open(imgpaths[0])
-        else:
-            img1=img2
+        img1 = Image.open(imgpaths[0])
         img2 = Image.open(imgpaths[1])
-        #img2 = Image.open(imgpaths[1])
-        #print(img1)
-        #print(img2)
-        
-
-        if torch.is_tensor(img1):
-            somevar=False
-        else:
-            img1 = T(img1)
-        if torch.is_tensor(img2):
-            somevar=False
-        else:
-            img2 = T(img2)        
-        #img2 = T(img2)
-        imgs = [img1, img2] 
+        img3 = Image.open(imgpaths[2])
+        img1 = T(img1)        
+        img2 = T(img2)  
+        img3 = T(img3)  
+        imgs = [img1, img2,img3] 
         meta = {'imgpath': imgpaths}
         return imgs, meta
 
