@@ -91,7 +91,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
             print(b)
         ###render
         with torch.no_grad():
-            while num<int(count/6)*6):
+            while num<(int(count/6)*6):
                 s=time.time()
                 frame1=Image.open(frames[num])
                 frame2=Image.open(frames[num+1]) 
