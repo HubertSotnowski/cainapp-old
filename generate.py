@@ -8,12 +8,12 @@ import threading
 import torch
 import platform
 import os
+from torchvision import transforms
 import numpy as np
 from tqdm import tqdm
 import utils
 import glob
 import cv2
-import newloader
 from utils import quantize
 from PIL import Image
 def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=False,  appupdate=False, app="hmm", dataloader="new",partialconv2d=True, funnynumber=1):    #torch.cuda.set_device(GPUid)
@@ -21,35 +21,8 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
     if appupdate==True:
         import PyQt5.QtGui 
     print(ossystem)
-    torch.cuda.device(GPUid)
-    device = torch.device(torch_device)
-    torch.backends.cudnn.enabled = True
-    torch.backends.cudnn.benchmark = True
-    torch.manual_seed(5325)
-    torch.cuda.manual_seed(5325)
-    if TensorRT==True:
-        from torch2trt import TRTModule
-        model_trt = TRTModule()
-        model_trt.load_state_dict(torch.load(modelp))
-    else:
-        if partialconv2d == True:
-            from model.cainpartial import CAIN
-        else:
-            from model.cain import CAIN
-        model = CAIN(depth=3)
-        checkpoint = torch.load(modelp)
-        model.load_state_dict(checkpoint)
-        if fp16==True:
-            model.cuda().half() 
-        else:
-            model.cuda()
-        
-    if ossystem=='Linux':
-        def save():
-            utils.save_image(out[b], temp_img+"/"+savepath)
-    else:
-        def save():
-            utils.save_image(out[b], temp_img[:-6]+savepath)
+
+    
     def update(progres="0"):         
         if int(progres) == int(int((bar/count*100)+1)):
             print("")
@@ -63,74 +36,94 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                 q_im = cv2.resize(cv2.cvtColor((cv2.cvtColor(np.array(im), cv2.COLOR_BGR2RGB)), cv2.COLOR_BGR2RGB), (448,256), interpolation = cv2.INTER_NEAREST)
                 app.label_5.setPixmap( PyQt5.QtGui.QPixmap(PyQt5.QtGui.QImage(q_im.data, 448, 256, 1344,  PyQt5.QtGui.QImage.Format_RGB888)))
     def test():
+        #set global things
         global savepath
         global images
         global fInd
+        global framenum
         global progres
         global bar
         global count
+        global out1
+        global out2
         global fpos
         global meta
         global out
         global b
         global tsave
-        ##### Load Dataset #####
-        test_loader = utils.load_dataset(
-            temp_img, batch_size, batch_size, 0, img_fmt=img_fmt, dataloader=dataloader)
-        #model.eval()
+        #set important things
+        var3=2
         bar=0
         count=0
+        framenum=0
         progres=0
-        for file in glob.glob(f"{temp_img}/*.*"):
+        num=0
+        T = transforms.ToTensor()
+        var1=sorted(glob.glob(f"{temp_img}/*.*"))
+        for file in var1:
             count+=1
         count=count/batch_size
-        t = time.time()
+        #rename files
+        startnum=0
+        for file in var1:
+            os.rename(file,temp_img + "/"+ str(startnum).zfill(6)+".0.png")
+            startnum+=1
+            
+        ### load model
+        torch.set_default_tensor_type(torch.cuda.HalfTensor)
+        torch.cuda.device(GPUid)
+        device = torch.device(torch_device)
+        from model.cain import CAIN
+        model = CAIN(depth=3)
+        checkpoint = torch.load(modelp)
+        model.load_state_dict(checkpoint)
+        model.cuda()
+        ### list frames
+        
+            
+        for file in sorted(glob.glob(f"{temp_img}/*.*")):
+            try:
+                frames+=[file]
+            except:
+                frames=[file]
+            count+=1
+        for b in frames:
+            print(b)
+        ###render
         with torch.no_grad():
-            for i, (images, meta) in enumerate(tqdm(test_loader)):
-                # Build input batch
-                if fp16==True:
-                    im1, im2,im3 = images[0].to(device).half(), images[1].to(device).half(), images[2].to(device).half()
-                else:
-                    im1, im2,im3 = images[0].to(device), images[1].to(device), images[2].to(device).half()
+            while True==True:
+                s=time.time()
+                frame1=Image.open(frames[num])
+                frame2=Image.open(frames[num+1]) 
+                frame3=Image.open(frames[num+2])
+                frame22=Image.open(frames[num+3]) 
+                frame32=Image.open(frames[num+4])
+                frame1=T(frame1)
+                frame2=T(frame2)
+                frame3=T(frame3)
+                frame22=T(frame22)
+                frame32=T(frame32)
+                im1=torch.stack((frame1,frame3),dim=0)
+                im2=torch.stack((frame2,frame22),dim=0)
+                im3=torch.stack((frame3,frame32),dim=0)
                 
-
-                # Forward
-                if TensorRT==True:
-                    out, _ = model_trt(im1, im2,im3)
-                else:
-                    out, _ = model(im1, im2,im3)
-                bar+=1
-                update(progres=progres)
-                for b in range(images[0].size(0)):
-                    paths = meta['imgpath'][0][b].split('/')
-                    fp = temp_img
-                    fp = os.path.join(paths[-1][:-4])   # remove '.png' extension
-
-                    # Decide float index
-                    i1_str = paths[-1][:-4]
-                    i2_str = meta['imgpath'][1][b].split('/')[-1][:-4]
-                    try:
-                        i1 = float(i1_str.split('_')[-1])
-                    except ValueError:
-                        i1 = 0.0
-                    try:
-                        i2 = float(i2_str.split('_')[-1])
-                        if i2 == 0.0:
-                            i2 = 1.0
-                    except ValueError:
-                        i2 = 1.0
-                    fpos = max(0, fp.rfind('_'))
-                    fInd = (i1 + i2) / 2
-                    savepath = "%s_%06f.%s" % (fp[:fpos], fInd, img_fmt)
-                    tsave = threading.Thread(target=save)
-                    tsave.start()
-
-
-         
+                out1,out2,_=model(im1.cuda(),im2.cuda(),im3.cuda())
+                def save(saveout1,saveout2,saveout3,saveout4,num):
+                    utils.save_image(saveout1, temp_img+"/"+str(num).zfill(6)+".5.png")
+                    utils.save_image(saveout2, temp_img+"/"+str(num+1).zfill(6)+".5.png")
+                    utils.save_image(saveout3, temp_img+"/"+str(num+2).zfill(6)+".5.png")
+                    utils.save_image(saveout4, temp_img+"/"+str(num+3).zfill(6)+".5.png")
+                tsave = threading.Thread(target=save,args=(out1[0],out2[0],out1[1],out2[1],num))
+                tsave.start()
+                num+=4
+                e=time.time()
+                print((e-s)/2/3)
+                print(num)
+    try:
+        test()
+    except:
+        print("finished")
     
-    test()
-    if dataloader=="new":
-        newloader.clean()
     try:
         del model
     except:

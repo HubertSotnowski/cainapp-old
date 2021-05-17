@@ -77,4 +77,4 @@ class CAIN(nn.Module):
         out1 += mi1
         out2 += mi2
 
-        return (out1), feats
+        return out1,out2, feats
