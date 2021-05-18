@@ -3,6 +3,7 @@ import shutil
 
 ################
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 from PyQt5 import uic
 import qdarkstyle
 import threading
@@ -116,6 +117,7 @@ class UI(QMainWindow):
         for file in glob.glob("*.pth"):
             print(file)
             self.comboBox_4.addItem(f"{file}")
+        self.setWindowIcon(QIcon('cain.png'))
         self.pushButton.clicked.connect(extract)
         self.pushButton3.clicked.connect(SelectVideo)
         self.pushButton_2.clicked.connect(SelectOutput)
