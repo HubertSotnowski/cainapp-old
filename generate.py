@@ -115,6 +115,13 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                         utils.save_image(saveout2, temp_img+"/"+str(num+1).zfill(6)+".5.png")
                         utils.save_image(saveout3, temp_img+"/"+str(num+2).zfill(6)+".5.png")
                         utils.save_image(saveout4, temp_img+"/"+str(num+3).zfill(6)+".5.png")
+                        if appupdate==True:
+                            app.progressBar_2.setValue(round((num/count*100)+1))
+                            q_im = quantize(saveout1.data.mul(255))
+                            im = np.array(q_im.permute(1, 2, 0).cpu().numpy().astype(np.uint8))
+                            q_im = cv2.resize(cv2.cvtColor((cv2.cvtColor(np.array(im), cv2.COLOR_BGR2RGB)), cv2.COLOR_BGR2RGB), (448,256))
+                            app.label_5.setPixmap( PyQt5.QtGui.QPixmap(PyQt5.QtGui.QImage(q_im.data, 448, 256, 1344,  PyQt5.QtGui.QImage.Format_RGB888)))
+                        
                     tsave = threading.Thread(target=save,args=(out1[0],out2[0],out1[1],out2[1],num))
                     tsave.start()
                     num+=4
