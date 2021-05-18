@@ -326,7 +326,7 @@ class Interpolation(nn.Module):
         n_resblocks=config_json["n_resblocks"]
         n_resgroups=config_json["n_resgroups"]
         self.headConv = conv3x32(n_feats * 2, n_feats)
-        self.headConv1 = conv3x32(n_feats * 2, n_feats)
+
         modules_body = [
             ResidualGroup(
                 RCAB,
@@ -345,7 +345,7 @@ class Interpolation(nn.Module):
         t1 = torch.cat([x0, x1], dim=1)
         t2 = torch.cat([x1, x2], dim=1)
         t1 = self.headConv(t1)
-        t2 = self.headConv1(t2)
+        t2 = self.headConv(t2)
         x = torch.stack([t1, t2], dim=-1)
         res = self.body(x)
         res += x

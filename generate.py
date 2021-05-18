@@ -91,40 +91,39 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
             print(b)
         ###render
         with torch.no_grad():
-            while num<(int(count/6)*6):
-                s=time.time()
-                frame1=Image.open(frames[num])
-                frame2=Image.open(frames[num+1]) 
-                frame3=Image.open(frames[num+2])
-                frame22=Image.open(frames[num+3]) 
-                frame32=Image.open(frames[num+4])
-                frame1=T(frame1)
-                frame2=T(frame2)
-                frame3=T(frame3)
-                frame22=T(frame22)
-                frame32=T(frame32)
-                im1=torch.stack((frame1,frame3),dim=0)
-                im2=torch.stack((frame2,frame22),dim=0)
-                im3=torch.stack((frame3,frame32),dim=0)
-                
-                out1,out2,_=model(im1.cuda(),im2.cuda(),im3.cuda())
-                def save(saveout1,saveout2,saveout3,saveout4,num):
-                    utils.save_image(saveout1, temp_img+"/"+str(num).zfill(6)+".5.png")
-                    utils.save_image(saveout2, temp_img+"/"+str(num+1).zfill(6)+".5.png")
-                    utils.save_image(saveout3, temp_img+"/"+str(num+2).zfill(6)+".5.png")
-                    utils.save_image(saveout4, temp_img+"/"+str(num+3).zfill(6)+".5.png")
-                tsave = threading.Thread(target=save,args=(out1[0],out2[0],out1[1],out2[1],num))
-                tsave.start()
-                num+=4
-                e=time.time()
-                print((e-s)/2/3)
-                print(num)
+            while num<count-4:
+                if  os.path.exists(frames[num+4]) ==True:
+                    frame1=Image.open(frames[num])
+                    frame2=Image.open(frames[num+1]) 
+                    frame3=Image.open(frames[num+2])
+                    frame22=Image.open(frames[num+3]) 
+                    frame32=Image.open(frames[num+4])
+                    frame1=T(frame1)
+                    frame2=T(frame2)
+                    frame3=T(frame3)
+                    frame22=T(frame22)
+                    frame32=T(frame32)
+                    im1=torch.stack((frame1,frame3),dim=0)
+                    im2=torch.stack((frame2,frame22),dim=0)
+                    im3=torch.stack((frame3,frame32),dim=0)
+                    s=time.time()
+                    out1,out2,_=model(im1.cuda(),im2.cuda(),im3.cuda())
+                    e=time.time()
+                    print(e-s)
+                    def save(saveout1,saveout2,saveout3,saveout4,num):
+                        utils.save_image(saveout1, temp_img+"/"+str(num).zfill(6)+".5.png")
+                        utils.save_image(saveout2, temp_img+"/"+str(num+1).zfill(6)+".5.png")
+                        utils.save_image(saveout3, temp_img+"/"+str(num+2).zfill(6)+".5.png")
+                        utils.save_image(saveout4, temp_img+"/"+str(num+3).zfill(6)+".5.png")
+                    tsave = threading.Thread(target=save,args=(out1[0],out2[0],out1[1],out2[1],num))
+                    tsave.start()
+                    num+=4
+                    e=time.time()
+                    print(((e-s)))
+                    print(num)
 
     test()
-    try:
-        del model
-    except:
-        del model_trt
+
 
 
 
