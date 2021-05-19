@@ -91,7 +91,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
             print(b)
         ###render
         with torch.no_grad():
-            while num<count-5:
+            while num<count-4:
                 if  os.path.exists(frames[num+4]) ==True:
                     frame1=Image.open(frames[num])
                     frame2=Image.open(frames[num+1]) 
@@ -109,7 +109,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                     s=time.time()
                     out1,out2,_=model(im1.cuda(),im2.cuda(),im3.cuda())
                     e=time.time()
-                    print(f"{(e-s)/4}s/frame")
+                    print(e-s)
                     def save(saveout1,saveout2,saveout3,saveout4,num):
                         utils.save_image(saveout1, temp_img+"/"+str(num).zfill(6)+".5.png")
                         utils.save_image(saveout2, temp_img+"/"+str(num+1).zfill(6)+".5.png")
