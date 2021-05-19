@@ -39,7 +39,7 @@ class Decoder(nn.Module):
 
         # shuffler_list = [PixelShuffle(2) for i in range(depth)]
         # self.shuffler = nn.Sequential(*shuffler_list)
-        self.shuffler = torch.nn.PixelShuffle(2**depth)
+        self.shuffler = PixelShuffle(2**depth)
 
     def forward(self, feats):
         batch_size, channels, in_height, in_width,depth  = feats.size()
