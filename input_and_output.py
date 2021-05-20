@@ -9,6 +9,7 @@ import platform
 import time
 ossystem=platform.system()
 print(ossystem)
+import glob
 
 filename="test.mp4"
 def SelectInput():
@@ -83,6 +84,12 @@ def ExportVideo(dir_path, proresmode, imtype, fps, factor, filetype, useprores, 
         print(fpss)
         print(fps)
     #list_frame(dir=f"frames")
+    startnum=0
+    var1=sorted(glob.glob(f"{dir_path}frames/*.*"))
+    for file in var1:
+        os.rename(file,dir_path +"frames/"+ str(startnum).zfill(6)+".png")
+        startnum+=1
+            
     if ossystem=='Linux':
         if useprores==True:
             print("prores")
@@ -95,15 +102,14 @@ def ExportVideo(dir_path, proresmode, imtype, fps, factor, filetype, useprores, 
             os.system(f'ffmpeg -i "{dir_path}/video.{filetype}"  -i "{dir_path}/1.wav" -b:a 320k -c:v copy "{dir_path}/video_audio.mp4"')
             torch.cuda.empty_cache()
     else:
-
         if useprores==True:
-            os.system(f'ffmpeg -f concat -safe 0 -r {float(fpss)} -i "{dir_path}/frame_list.txt" -c:v prores_ks {line} -profile:v {proresmode} "{dir_path}/video.{filetype}"')
+            os.system(f'ffmpeg -f concat -safe 0 -r {float(fpss)} -i "{dir_path}frames/%6d.png" -c:v prores_ks {line} -profile:v {proresmode} "{dir_path}/video.{filetype}"')
             torch.cuda.empty_cache()
         else:
-            os.system(f'ffmpeg -f concat -safe 0 -r {float(fpss)} -i "{dir_path}/frame_list.txt" {line} "{dir_path}/video.{filetype}"')
+            os.system(f'ffmpeg -f concat -safe 0 -r {float(fpss)} -i "{dir_path}frames/%6d.png" {line} "{dir_path}/video.{filetype}"')
             torch.cuda.empty_cache()
         if os.path.isfile(f"{dir_path}/1.wav"):
-            os.system(f'ffmpeg -i "{dir_path}/video.{filetype}" -i "{dir_path}/1.wav" -c:v copy "{dir_path}/video_audio.mp4"')
+            os.system(f'ffmpeg -f concat -safe 0 -r {float(fpss)} -i "{dir_path}frames/%6d.png" -i "{dir_path}/1.wav" -c:v copy "{dir_path}/video_audio.mp4"')
             torch.cuda.empty_cache()
 
 
