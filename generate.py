@@ -41,6 +41,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         model.load_state_dict(checkpoint)
         if fp16==True:
             model.cuda().half() 
+            torch.set_default_tensor_type(torch.cuda.HalfTensor)
         else:
             model.cuda()
         
@@ -74,10 +75,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         with torch.no_grad():
             for i, (images, meta) in enumerate(tqdm(test_loader)):
                 # Build input batch
-                if fp16==True:
-                    im1, im2 = images[0].to(device).half(), images[1].to(device).half()
-                else:
-                    im1, im2 = images[0].to(device), images[1].to(device)
+                im1, im2 = images[0].to(device), images[1].to(device)
                 
 
                 # Forward
@@ -88,10 +86,10 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                 bar+=1
                 
                 if int(progres) == int(int((bar/count*100)+1)):
-                    print("not updating")
+                    print(" ")
                 else:
                     progres = round((bar/count*100)+1)
-                    print("updated")
+                    print(" ")
                     if appupdate==True:
                         if count>200:
                         
