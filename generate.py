@@ -67,7 +67,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
         bar=0
         count=0
         progres=0
-        for file in glob.glob(f"{temp_img}/*.*"):
+        for file in os.listdir(f"{temp_img}"):
             count+=1
         count=count/batch_size
         t = time.time()
