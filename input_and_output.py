@@ -91,13 +91,13 @@ def ExportVideo(dir_path, proresmode, imtype, fps, factor, filetype, useprores, 
         startnum+=1
     if 1==1:
         if useprores==True:
-            os.system(f'ffmpeg -r {float(fpss)} -i "{dir_path}frames/%6d.png" -c:v prores_ks {line} -profile:v {proresmode} "{dir_path}/video.{filetype}"')
+            os.system(f'ffmpeg -r {float(fpss)} -i "{dir_path}frames/%6d.{filetype}" -c:v prores_ks {line} -profile:v {proresmode} "{dir_path}/video.{filetype}"')
             torch.cuda.empty_cache()
         else:
-            os.system(f'ffmpeg -r {float(fpss)} -i "{dir_path}frames/%6d.png" {line} "{dir_path}/video.{filetype}"')
+            os.system(f'ffmpeg -r {float(fpss)} -i "{dir_path}frames/%6d.{filetype}" {line} "{dir_path}/video.{filetype}"')
             torch.cuda.empty_cache()
         if os.path.isfile(f"{dir_path}/1.wav"):
-            os.system(f'ffmpeg -r {float(fpss)} -i "{dir_path}frames/%6d.png" -i "{dir_path}/1.wav" -c:v copy "{dir_path}/video_audio.mp4"')
+            os.system(f'ffmpeg -r {float(fpss)} -i "{dir_path}frames/%6d.{filetype}" -i "{dir_path}/1.wav" {line} "{dir_path}/video_audio.mp4"')
             torch.cuda.empty_cache()
 
 
