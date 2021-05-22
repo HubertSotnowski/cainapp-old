@@ -34,9 +34,9 @@ import cv2
 
 def load_dataset(data_root, batch_size, test_batch_size, num_workers, test_mode='medium', img_fmt='png',dataloader="new"):
     if dataloader=="new":
-        from newloader import get_loader
+        from modules.newloader import get_loader
     if dataloader=="old":
-        from oldloader import get_loader
+        from modules.oldloader import get_loader
 
     test_loader = get_loader('test', data_root, test_batch_size, img_fmt=img_fmt, shuffle=False, num_workers=num_workers, n_frames=1)
     #train_loader = get_loader('train', data_root, batch_size, shuffle=True, num_workers=num_workers)

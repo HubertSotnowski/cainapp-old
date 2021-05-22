@@ -10,11 +10,12 @@ import platform
 import os
 import numpy as np
 from tqdm import tqdm
-import utils
+import modules.utils as utils
 import glob
 import cv2
-import newloader
-from utils import quantize
+import modules.newloader as newloader
+
+from modules.utils import quantize
 from PIL import Image
 def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=False,  appupdate=False, app="hmm", dataloader="new",partialconv2d=True, funnynumber=1):    #torch.cuda.set_device(GPUid)
     ossystem=platform.system()
@@ -92,7 +93,6 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
                     print(" ")
                     if appupdate==True:
                         if count>200:
-                        
                             app.progressBar_2.setValue(progres)
                             q_im = quantize(out[0].data.mul(255))
                             im = np.array(q_im.permute(1, 2, 0).cpu().numpy().astype(np.uint8))

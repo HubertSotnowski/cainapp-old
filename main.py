@@ -6,27 +6,27 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5 import uic
 import qdarkstyle
-import threading
 
 #################
-import generate
-import input_and_output as input_and_output
-import save_loda
+from modules.generate import *
+from modules.input_and_output import *
+from modules.save_load import *
+from modules.model_conv import *
+
 #############
+import threading
 import json
 import time
 import glob
-import model_conv
 global OutputPath
 OutputPath=""
 import platform
-os.system("export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64")
 output="1.pth"
 tensort=False
 width=320
 height=320
 ossystem=platform.system()
-print(ossystem)
+print(f"os: {ossystem}")
 ##############
 
 class UI(QMainWindow):
@@ -34,7 +34,7 @@ class UI(QMainWindow):
         ###############
         def SelectOutput():
             global OutputPath
-            OutputPath = input_and_output.select_path()
+            OutputPath = select_path()
             self.label_14.setText(OutputPath)
         def encode():
             os.system('del "frame_list.txt"')
@@ -46,11 +46,11 @@ class UI(QMainWindow):
                  prores_mode=3
             if self.comboBox_3.currentText()=="4444":
                  prores_mode=4
-            input_and_output.list_frame(dir=f"{OutputPath}/cain/frames", text_path=f"{OutputPath}/cain/")
+            list_frame(dir=f"{OutputPath}/cain/frames", text_path=f"{OutputPath}/cain/")
             time.sleep(2) 
-            input_and_output.ExportVideo(dir_path=f"{OutputPath}/cain/", proresmode=prores_mode, imtype=self.comboBox_5.currentText(), fps=f"{video[0]}", factor=self.comboBox_2.currentText(), filetype=self.comboBox.currentText(), useprores=self.checkBox_3.isChecked(),line=self.lineEdit_3.text() )
+            ExportVideo(dir_path=f"{OutputPath}/cain/", proresmode=prores_mode, imtype=self.comboBox_5.currentText(), fps=f"{video[0]}", factor=self.comboBox_2.currentText(), filetype=self.comboBox.currentText(), useprores=self.checkBox_3.isChecked(),line=self.lineEdit_3.text() )
         def load():
-            load = save_loda.load()
+            load = load()
             self.lineEdit.setText(load[0])
             self.comboBox_5.setCurrentText(load[1])
             self.lineEdit_3.setText(load[2])
@@ -64,27 +64,27 @@ class UI(QMainWindow):
             self.checkBox_7.setChecked(load[10])
             self.spin_3.setValue(int(load[10]))
         def saveset():
-            save_loda.save(self.lineEdit.text(), self.comboBox_5.currentText(), self.lineEdit_3.text(), self.comboBox.currentText(), self.checkBox_3.isChecked(), self.comboBox_3.currentText(), self.comboBox_2.currentText(), self.checkBox_4.isChecked(),  self.comboBox_6.currentText(), self.comboBox_4.currentText(), self.checkBox_7.isChecked(), self.spin_3.value())
+            save(self.lineEdit.text(), self.comboBox_5.currentText(), self.lineEdit_3.text(), self.comboBox.currentText(), self.checkBox_3.isChecked(), self.comboBox_3.currentText(), self.comboBox_2.currentText(), self.checkBox_4.isChecked(),  self.comboBox_6.currentText(), self.comboBox_4.currentText(), self.checkBox_7.isChecked(), self.spin_3.value())
         def SelectVideo():
             global video
-            video = input_and_output.SelectInput()
+            video = SelectInput()
             self.label_15.setText(video[2])
             if video[5]==True:
                  self.lineEdit.setText(f"-vf scale={round(round(round(video[4])/8)*8)}:{round(round(round(video[3])/8)*8)}:flags=lanczos")
 
             print(video)
         def extract():
-            input_and_output.ExtractFramesOrSplit(Type=self.comboBox_5.currentText(), chunksize="0", dir_path=OutputPath, Line=self.lineEdit.text(), input=video[2])
+            ExtractFramesOrSplit(Type=self.comboBox_5.currentText(), chunksize="0", dir_path=OutputPath, Line=self.lineEdit.text(), input=video[2])
         def interpolateft():
             dataloader="new"
             if self.checkBox_5.isChecked():
                 dataloader="old"
 
             if self.comboBox_2.currentText()=="2x":
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader, partialconv2d=self.checkBox_8.isChecked())
+                interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader, partialconv2d=self.checkBox_8.isChecked())
             else:
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader, partialconv2d=self.checkBox_8.isChecked())
-                generate.interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader, partialconv2d=self.checkBox_8.isChecked())
+                interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader, partialconv2d=self.checkBox_8.isChecked())
+                interpolation(batch_size=int(self.comboBox_6.currentText()), img_fmt=self.comboBox_5.currentText(), torch_device="cuda", temp_img = f"{OutputPath}/cain/frames", GPUid=self.spin_3.value(), GPUid2=self.checkBox_7.isChecked(), fp16=self.checkBox_4.isChecked(), modelp=self.comboBox_4.currentText(), TensorRT=self.checkBox.isChecked(), appupdate=True, app=self,dataloader=dataloader, partialconv2d=self.checkBox_8.isChecked())
         def interpolate():
                 tinterpolate = threading.Thread(target=interpolateft)
                 tinterpolate.start()

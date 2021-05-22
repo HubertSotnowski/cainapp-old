@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>752</width>
-    <height>593</height>
+    <width>754</width>
+    <height>606</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -225,7 +225,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -437,6 +437,19 @@
      </property>
      <property name="text">
       <string>use prores</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_17">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>260</y>
+       <width>511</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>this app is very experimental :0 have fun using it</string>
      </property>
     </widget>
    </widget>

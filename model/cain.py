@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from common import *
+from  model.common import *
 
 
 class Encoder(nn.Module):
