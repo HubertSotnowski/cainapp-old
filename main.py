@@ -100,7 +100,7 @@ class UI(QMainWindow):
             output_model = QFileDialog.getSaveFileName(self, 'Save File',"output.pth")
         def convert():
             try:
-                model_conv.convert(Input=input_model[0],output=output_model[0],tensort=self.checkBox_2.isChecked(),width=self.lineEdit_2.text(), height= self.lineEdit_4.text())
+                convert(Input=input_model[0],output=output_model[0],tensort=self.checkBox_2.isChecked(),width=self.lineEdit_2.text(), height= self.lineEdit_4.text())
             except:
                 print("crashed")
             for file in glob.glob("*.pth"):
