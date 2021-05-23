@@ -44,6 +44,7 @@ def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "
             model.cuda().half() 
             torch.set_default_tensor_type(torch.cuda.HalfTensor)
         else:
+            torch.set_default_tensor_type(torch.cuda.FloatTensor)
             model.cuda()
         
     if ossystem=='Linux':
