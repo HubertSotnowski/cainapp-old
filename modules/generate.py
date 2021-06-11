@@ -17,7 +17,7 @@ import modules.newloader as newloader
 
 from modules.utils import quantize
 from PIL import Image
-def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=False,  appupdate=False, app="hmm", dataloader="new",partialconv2d=True, funnynumber=1):    #torch.cuda.set_device(GPUid)
+def interpolation(batch_size=5, img_fmt="png", torch_device="cuda", temp_img = "frameseq/", GPUid=0, GPUid2=2, fp16=True, modelp="1.pth", TensorRT=False,  appupdate=False, app="hmm", dataloader="new",partialconv2d=False, funnynumber=1):    #torch.cuda.set_device(GPUid)
     ossystem=platform.system()
     if appupdate==True:
         import PyQt5.QtGui 

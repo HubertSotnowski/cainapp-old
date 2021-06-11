@@ -1,8 +1,8 @@
 import torch
 from model.cain import CAIN
-def convert(Input="input.pth",output="1.pth",tensort=False, height=256, width=256):
+def convertModelCain(Input="input.pth",output="1.pth",tensort=False, height=256, width=256):
     model = CAIN(depth=3)
-    model = torch.nn.DataParallel(model).to("cuda")
+    model = model.cuda()
     print(Input)
     checkpoint = torch.load(Input)
     model.load_state_dict(checkpoint['state_dict'])

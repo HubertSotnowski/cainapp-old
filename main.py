@@ -99,10 +99,8 @@ class UI(QMainWindow):
             global output_model
             output_model = QFileDialog.getSaveFileName(self, 'Save File',"output.pth")
         def convert():
-            try:
-                convert(Input=input_model[0],output=output_model[0],tensort=self.checkBox_2.isChecked(),width=self.lineEdit_2.text(), height= self.lineEdit_4.text())
-            except:
-                print("crashed")
+
+            convertModelCain(Input=input_model[0],output=output_model[0],tensort=self.checkBox_2.isChecked(),width=self.lineEdit_2.text(), height= self.lineEdit_4.text())
             for file in glob.glob("*.pth"):
                 print(file)
                 self.comboBox_4.addItem(f"{file}")

@@ -73,7 +73,12 @@ def list_frame(dir="./frames", text_path="./frames"):
     txt.close()
     
 
-
+def rename(dir_path):
+    var1=sorted(glob.glob(f"{dir_path}/*.*"))
+    startnum=0
+    for file in var1:
+        os.rename(file,dir_path +"/"+ str(startnum).zfill(6)+".png")
+        startnum+=1
 def ExportVideo(dir_path, proresmode, imtype, fps, factor, filetype, useprores, line):
     if factor=="2x":
         fpss=2*float(fps)
