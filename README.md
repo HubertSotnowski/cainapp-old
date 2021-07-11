@@ -1,3 +1,5 @@
+This project has been moved [here](https://gitlab.com/hubert.sontowski2007/cainapp/-/tree/main). Check the new repo for the latest updates.
+
 # CAINAPP 2 BETA🚧
 
 Welcome to CAINAPP 2.0!
