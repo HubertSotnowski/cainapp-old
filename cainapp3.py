@@ -60,7 +60,7 @@ class UI(QMainWindow):
 
                     QApplication.processEvents()  
                     interpolate(self,self.Gpuid.value(),fp16,self.modellist.currentText(),self.ffmpegline.text(),YUV,getvideoinfo(InputPath),InputPath,OutputPath,self.progressBar,self.label_2)
-                    if exists(f"{os.path.split(OutputPath)[0]}/temp.mkv'"):
+                    if exists(f"{os.path.split(OutputPath)[0]}/temp.mkv"):
                         os.system(f"ffmpeg -y -i '{os.path.split(OutputPath)[0]}/temp.mkv' -i '{os.path.split(OutputPath)[0]}/temp-v.mkv' -c copy '{OutputPath}'")
                     else:
                         os.system(f"ffmpeg -y -i '{os.path.split(OutputPath)[0]}/temp-v.mkv' -c copy '{OutputPath}'")
