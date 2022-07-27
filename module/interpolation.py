@@ -12,6 +12,7 @@ try:
 except:
     from PyQt5.QtWidgets import *
 import cv2
+import signal
 import numpy as np
 def quantize(img, rgb_range=255):
     return img.mul(255 / rgb_range).clamp(0, 255).round()
@@ -74,17 +75,17 @@ def save(argssave):
     else:
         out1,out2=out
         del out
-        frame1,frame3=x1
-        frame2,frame4=x2
+        frame1,frame2=x1
+        frame2,frame3=x2
         try:
         
             toffmpeg(frame1,False,proc)
             toffmpeg(out1,True,proc)
             toffmpeg(frame2,False,proc)
+            toffmpeg(out2,True,proc)
         except Exception as e:
             print(e)
         toffmpeg(out2,True,proc)
-        toffmpeg(frame3,False,proc)
 def read(argsread):
     video,im1,lowres,padding,yuv=argsread
     frame1 = im1
@@ -97,6 +98,7 @@ def read(argsread):
         ret,frame6 = video.read()
         if ret==False:
             return None
+            
         frame2 = cv2.copyMakeBorder(frame2, int(padding_h/2), int(padding_h/2), int(padding_w/2), int(padding_w/2), cv2.BORDER_REFLECT)
         frame3 = cv2.copyMakeBorder(frame3, int(padding_h/2), int(padding_h/2), int(padding_w/2), int(padding_w/2), cv2.BORDER_REFLECT)
         frame4 = cv2.copyMakeBorder(frame4, int(padding_h/2), int(padding_h/2), int(padding_w/2), int(padding_w/2), cv2.BORDER_REFLECT)
@@ -125,6 +127,7 @@ def read(argsread):
     else:
         if ret==False:
             return None
+            
         frame2 = cv2.copyMakeBorder(frame2, int(padding_h/2), int(padding_h/2), int(padding_w/2), int(padding_w/2), cv2.BORDER_REFLECT)
         frame3 = cv2.copyMakeBorder(frame3, int(padding_h/2), int(padding_h/2), int(padding_w/2), int(padding_w/2), cv2.BORDER_REFLECT)
 
@@ -133,8 +136,8 @@ def read(argsread):
         frame3c=frame3
         x1=(frame1,frame2)
         x2=(frame2,frame3)
-        frame2 = transform(np.array(frame2,dtype="float32"))
-        frame3 = transform(np.array(frame3,dtype="float32"))
+        frame2 = transform(np.array(frame2,dtype="float32")/255)
+        frame3 = transform(np.array(frame3,dtype="float32")/255)
         x1t=torch.stack((transform(frame1),frame2),dim=0)
         x2t=torch.stack((frame2,frame3),dim=0)
         x1t=kornia.color.bgr_to_rgb(x1t)
@@ -173,6 +176,8 @@ def interpolate(self,gpuid,fp16,model_name,FFmpegParams,yuv,videoinfo,path,Outpu
     QApplication.processEvents()  
     if height<720:
         lowres=True
+    else:
+        lowres=False
     command = [f"ffmpeg",
             '-y',
             '-f', 'rawvideo',
@@ -228,7 +233,9 @@ def interpolate(self,gpuid,fp16,model_name,FFmpegParams,yuv,videoinfo,path,Outpu
                     tread = executor.submit(read,argsread)
                     x1,x2,im1,x1n,x2n,ret=tread.result()
                     if ret==False:
+                        proc.send_signal(signal.SIGINT)
                         return None
+                        
 
 
                 if fp16:
@@ -241,6 +248,7 @@ def interpolate(self,gpuid,fp16,model_name,FFmpegParams,yuv,videoinfo,path,Outpu
                     except Exception as e:
                         QMessageBox.critical(self, "critical", f"error:\n{e}")
                         print(e)
+                        proc.send_signal(signal.SIGINT)
                         return None
                 else:
                     try:
@@ -256,6 +264,9 @@ def interpolate(self,gpuid,fp16,model_name,FFmpegParams,yuv,videoinfo,path,Outpu
                 try:
                     x1,x2,im1,x1n,x2n,ret=tread.result()
                 except:
+                    proc.send_signal(signal.SIGINT)
+                    time.sleep(2)
+                    proc.kill()
                     return None
                 
                 if lowres:
